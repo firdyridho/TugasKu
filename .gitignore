@@ -1,0 +1,17 @@
+# Uploads (user-generated files)
+uploads/*
+!uploads/.htaccess
+
+# Config secrets
+config_local.php
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
