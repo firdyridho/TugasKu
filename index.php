@@ -1003,8 +1003,127 @@ $loggedIn = isLoggedIn();
             .lp-footer-grid { grid-template-columns: 1fr 1fr; }
         }
 
+        /* Mobile Nav Actions & Drawer */
+        .lp-nav-mobile-actions {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lp-mobile-header-btn {
+            padding: 0.42rem 0.85rem !important;
+            font-size: 0.82rem !important;
+            border-radius: 8px !important;
+            text-decoration: none !important;
+        }
+
+        .lp-hamburger-btn {
+            background: none;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 8px;
+            color: #1e293b;
+            padding: 0.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 150ms ease;
+        }
+
+        .lp-hamburger-btn:hover {
+            background: var(--blue-50);
+            border-color: var(--blue-200);
+        }
+
+        .lp-mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 290px;
+            max-width: 85vw;
+            background: #ffffff;
+            z-index: 10001;
+            box-shadow: -10px 0 35px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lp-mobile-drawer.open {
+            transform: translateX(0);
+        }
+
+        .lp-drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .lp-drawer-close {
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .lp-drawer-links {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1.25rem;
+            gap: 0.35rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .lp-drawer-link {
+            padding: 0.75rem 0.9rem;
+            color: #334155;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 150ms ease;
+        }
+
+        .lp-drawer-link:hover {
+            background: var(--blue-50);
+            color: var(--blue-600);
+        }
+
+        .lp-drawer-footer {
+            padding: 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .lp-drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 300ms ease;
+        }
+
+        .lp-drawer-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         @media (max-width: 640px) {
             .lp-nav-links { display: none; }
+            .lp-nav-mobile-actions { display: flex; }
             .lp-bento { grid-template-columns: 1fr; }
             .lp-bento-card.wide { grid-column: span 1; }
             .lp-stats-strip { grid-template-columns: 1fr 1fr; }
@@ -1064,7 +1183,53 @@ $loggedIn = isLoggedIn();
                 <?php endif; ?>
             </div>
         </div>
+
+        <!-- Mobile Navigation Right (Masuk button + Hamburger) -->
+        <div class="lp-nav-mobile-actions">
+            <?php if ($loggedIn): ?>
+                <a href="<?= BASE_URL ?>/dashboard" class="lp-btn-cta lp-mobile-header-btn">
+                    Dashboard
+                </a>
+            <?php else: ?>
+                <a href="<?= BASE_URL ?>/auth/login" class="lp-btn-cta lp-mobile-header-btn">
+                    Masuk
+                </a>
+            <?php endif; ?>
+            <button type="button" class="lp-hamburger-btn" id="lpHamburgerBtn" aria-label="Buka Menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
     </nav>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="lp-mobile-drawer" id="lpMobileDrawer">
+        <div class="lp-drawer-header">
+            <a href="<?= BASE_URL ?>/" class="brand-logo" style="text-decoration:none;">
+                Tugas<span class="logo-accent">Ku</span><span class="logo-dot">.</span>
+            </a>
+            <button type="button" class="lp-drawer-close" id="lpDrawerClose" aria-label="Tutup Menu">&times;</button>
+        </div>
+        <div class="lp-drawer-links">
+            <a href="#demo" class="lp-drawer-link" onclick="closeLpDrawer()">Demo Interaktif</a>
+            <a href="#fitur" class="lp-drawer-link" onclick="closeLpDrawer()">Fitur Utama</a>
+            <a href="#update" class="lp-drawer-link" onclick="closeLpDrawer()">Changelog Update</a>
+            <a href="<?= BASE_URL ?>/status" class="lp-drawer-link">Status Sistem</a>
+            <a href="<?= BASE_URL ?>/privacy" class="lp-drawer-link">Kebijakan Privasi</a>
+        </div>
+        <div class="lp-drawer-footer">
+            <?php if ($loggedIn): ?>
+                <a href="<?= BASE_URL ?>/dashboard" class="lp-btn-hero-primary" style="width: 100%; justify-content: center; text-decoration: none;">
+                    Buka Dashboard
+                </a>
+            <?php else: ?>
+                <a href="<?= BASE_URL ?>/auth/login" class="lp-btn-login" style="width: 100%; text-align: center; justify-content: center; padding: 0.75rem;">Masuk</a>
+                <a href="<?= BASE_URL ?>/auth/login?mode=register" class="lp-btn-hero-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem; text-decoration: none;">
+                    Daftar Akun Baru
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="lp-drawer-backdrop" id="lpDrawerBackdrop" onclick="closeLpDrawer()"></div>
 
     <!-- HERO -->
     <section class="lp-hero">
@@ -1612,6 +1777,27 @@ $loggedIn = isLoggedIn();
                 nav.style.boxShadow = 'none';
             }
         });
+
+        // Mobile Drawer Controller
+        const lpHamburgerBtn = document.getElementById('lpHamburgerBtn');
+        const lpDrawerClose = document.getElementById('lpDrawerClose');
+        const lpMobileDrawer = document.getElementById('lpMobileDrawer');
+        const lpDrawerBackdrop = document.getElementById('lpDrawerBackdrop');
+
+        function openLpDrawer() {
+            if (lpMobileDrawer) lpMobileDrawer.classList.add('open');
+            if (lpDrawerBackdrop) lpDrawerBackdrop.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLpDrawer() {
+            if (lpMobileDrawer) lpMobileDrawer.classList.remove('open');
+            if (lpDrawerBackdrop) lpDrawerBackdrop.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        if (lpHamburgerBtn) lpHamburgerBtn.addEventListener('click', openLpDrawer);
+        if (lpDrawerClose) lpDrawerClose.addEventListener('click', closeLpDrawer);
     </script>
 </body>
 </html>

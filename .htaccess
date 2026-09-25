@@ -1,25 +1,31 @@
 RewriteEngine On
-RewriteBase /TugasKu/
 
-# 1. Redirect index.php to directory root
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/TugasKu/(.*?)/?index\.php [NC]
-RewriteRule ^ /TugasKu/%1 [R=301,L]
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
 
-# 2. Redirect any other *.php request to clean URL (only for GET/HEAD, not POST)
+# 1. Redirect index.php to directory path (GET/HEAD only)
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_METHOD} !POST
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/TugasKu/([^\s?]+)\.php [NC]
-RewriteRule ^ %1 [R=301,L]
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^?]*?)/index\.php [NC]
+RewriteRule ^(.*)index\.php$ %1/ [R=301,L]
 
-# 3. If file or directory physically exists, serve it
+# 2. Redirect direct *.php request to clean URL (GET/HEAD only)
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^?]+)\.php [NC]
+RewriteRule ^(.+)\.php$ %1 [R=301,L]
+
+# 3. If file or directory physically exists, serve it directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
 # 4. If filename.php exists, rewrite internally
-RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^(.+?)/?$ $1.php [L,QSA]
 
-# 5. Fallback for non-existent files
+# 5. Fallback for non-existent routes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^(.*)$ index.php [L,QSA]

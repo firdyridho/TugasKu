@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
 
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -306,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     mobileRegisterBtn.classList.add('active');
                     mobileLoginBtn.classList.remove('active');
                 }
-                history.replaceState(null, '', 'login.php?mode=register');
+                history.replaceState(null, '', '?mode=register');
             }
 
             function setLoginMode() {
@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     mobileLoginBtn.classList.add('active');
                     mobileRegisterBtn.classList.remove('active');
                 }
-                history.replaceState(null, '', 'login.php?mode=login');
+                history.replaceState(null, '', '?mode=login');
             }
 
             // Initial view setup

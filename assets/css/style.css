@@ -707,13 +707,23 @@ input, textarea, select {
 }
 
 @media(max-width: 768px) {
+    body.auth-page {
+        padding: 1.25rem 0.85rem;
+        align-items: flex-start;
+        min-height: 100dvh;
+    }
+
     .auth-sliding-box {
         min-height: auto;
-        padding: 1.25rem;
+        padding: 1.25rem 1rem;
+        margin: auto 0;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px;
     }
     
     .sliding-gradient-card {
-        display: none;
+        display: none !important;
     }
     
     .auth-form-side {
@@ -722,6 +732,7 @@ input, textarea, select {
         height: auto;
         transform: none !important;
         opacity: 1 !important;
+        pointer-events: all !important;
         display: none;
     }
     
@@ -740,6 +751,10 @@ input, textarea, select {
     
     .auth-sliding-box.mode-register .sign-up-form-side {
         display: block;
+    }
+
+    .auth-input {
+        font-size: 16px; /* Prevents auto-zoom on iOS */
     }
 }
 
@@ -4502,7 +4517,7 @@ textarea.form-control {
 
     .main-content {
         margin-left: 0;
-        padding-bottom: 84px; /* clearance for mobile bottom nav */
+        padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important; /* clearance for mobile bottom nav */
     }
 
     .menu-toggle {
@@ -4519,6 +4534,7 @@ textarea.form-control {
         background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(18px);
         border-top: 1px solid var(--border);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     .content-wrapper {
@@ -4534,12 +4550,48 @@ textarea.form-control {
     }
 
     .page-header h1 {
-        font-size: 1.5rem;
+        font-size: 1.45rem;
     }
 
     .header-actions {
         width: 100%;
         justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    /* Filter Bar & Tabs Touch Horizontal Scroll */
+    .filter-bar {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+        margin-bottom: 1.25rem;
+    }
+
+    .tabs,
+    .cal-mode-bar,
+    .view-toggle-group,
+    .detail-tabs {
+        display: inline-flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        max-width: 100%;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar,
+    .cal-mode-bar::-webkit-scrollbar,
+    .view-toggle-group::-webkit-scrollbar,
+    .detail-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab,
+    .cal-mode-btn,
+    .detail-tab {
+        flex-shrink: 0;
+        white-space: nowrap;
     }
 
     /* Welcome Banner */
@@ -4581,6 +4633,10 @@ textarea.form-control {
 
     .stat-info h3 {
         font-size: 1.4rem;
+    }
+
+    .data-grid {
+        grid-template-columns: 1fr !important;
     }
 
     /* AI Widget on Mobile */
@@ -4648,6 +4704,41 @@ textarea.form-control {
 }
 
 @media (max-width: 640px) {
+    /* Timetable Stacking on Mobile */
+    .timetable-wrapper {
+        overflow-x: hidden;
+    }
+
+    .tt-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .tt-row-label {
+        min-width: 100% !important;
+        width: 100% !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border) !important;
+        padding: 0.65rem 1rem !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .tt-row-courses {
+        width: 100% !important;
+        padding: 0.75rem !important;
+        gap: 0.5rem !important;
+        flex-direction: column !important;
+    }
+
+    .tt-course-block {
+        min-width: 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
     .task-item {
         flex-direction: column;
         align-items: flex-start;
@@ -4662,6 +4753,19 @@ textarea.form-control {
         flex-wrap: wrap;
         gap: 0.5rem;
     }
+
+    /* Calendar Header on Mobile */
+    .calendar-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .calendar-nav {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
 
 @media (max-width: 480px) {
@@ -4675,6 +4779,23 @@ textarea.form-control {
 
     .topbar .date-display span#dateDisplay {
         display: none;
+    }
+
+    .calendar-day {
+        min-height: 52px;
+        padding: 0.25rem 0.2rem;
+    }
+
+    .calendar-date {
+        width: 20px;
+        height: 20px;
+        font-size: 0.75rem;
+        margin-bottom: 2px;
+    }
+
+    .calendar-weekday {
+        padding: 0.5rem 0.2rem;
+        font-size: 0.7rem;
     }
 
     .spotlight-popover-body {
