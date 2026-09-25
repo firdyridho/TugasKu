@@ -163,16 +163,37 @@ function editCourseTask(id, courseId, judul, deskripsi, deadline, tempat, status
 }
 
 function editSchedule(id, judul, deskripsi, hari, jamMulai, jamSelesai, tempat, tipe, warna) {
-    document.getElementById('edit_schedule_id').value = id;
-    document.getElementById('edit_schedule_judul').value = judul;
-    document.getElementById('edit_schedule_deskripsi').value = deskripsi;
-    document.getElementById('edit_schedule_hari').value = hari;
-    document.getElementById('edit_schedule_jam_mulai').value = jamMulai ? jamMulai.substring(0, 5) : '';
-    document.getElementById('edit_schedule_jam_selesai').value = jamSelesai ? jamSelesai.substring(0, 5) : '';
-    document.getElementById('edit_schedule_tempat').value = tempat || '';
-    document.getElementById('edit_schedule_tipe').value = tipe || 'mandiri';
-    document.getElementById('edit_schedule_warna').value = warna || '#6366f1';
+    var elId = document.getElementById('edit_schedule_id');
+    if (elId) elId.value = id;
+    var elJudul = document.getElementById('edit_schedule_judul');
+    if (elJudul) elJudul.value = judul || '';
+    var elDesc = document.getElementById('edit_schedule_deskripsi');
+    if (elDesc) elDesc.value = deskripsi || '';
+    var elHari = document.getElementById('edit_schedule_hari');
+    if (elHari) elHari.value = hari || 'senin';
+    var elMulai = document.getElementById('edit_schedule_jam_mulai');
+    if (elMulai) elMulai.value = jamMulai ? jamMulai.substring(0, 5) : '';
+    var elSelesai = document.getElementById('edit_schedule_jam_selesai');
+    if (elSelesai) elSelesai.value = jamSelesai ? jamSelesai.substring(0, 5) : '';
+    var elTempat = document.getElementById('edit_schedule_tempat');
+    if (elTempat) elTempat.value = tempat || '';
+    var elTipe = document.getElementById('edit_schedule_tipe');
+    if (elTipe) elTipe.value = tipe || 'mandiri';
+    var elWarna = document.getElementById('edit_schedule_warna');
+    if (elWarna) elWarna.value = warna || '#6366f1';
     openModal('editScheduleModal');
+}
+
+function openEditScheduleModal(btn) {
+    if (!btn) return;
+    var raw = btn.getAttribute('data-schedule');
+    if (!raw) return;
+    try {
+        var s = JSON.parse(raw);
+        editSchedule(s.id, s.judul, s.deskripsi, s.hari, s.jam_mulai, s.jam_selesai, s.tempat, s.tipe, s.warna);
+    } catch(e) {
+        console.error('Error parsing schedule json:', e);
+    }
 }
 
 // Live Search

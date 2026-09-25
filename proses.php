@@ -164,7 +164,7 @@ switch ($action) {
         } else {
             flash('error', 'Gagal memperbarui tugas kuliah.');
         }
-        redirect('/kuliah/detail?id=' . $courseId);
+        redirect('/kuliah/detail?id=' . $courseId . '&tab=tugas');
         break;
 
     case 'add_schedule':

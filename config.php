@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 date_default_timezone_set('Asia/Jakarta');
 
 // Versioning for static asset cache-busting
-if (!defined('APP_VERSION')) define('APP_VERSION', '2.6.3');
+if (!defined('APP_VERSION')) define('APP_VERSION', '2.6.4');
 
 // Load local/hosting configuration if present (e.g. on live web server)
 if (file_exists(__DIR__ . '/config_local.php')) {
@@ -41,6 +41,15 @@ try {
     $checkKelas = @$conn->query("SHOW COLUMNS FROM courses LIKE 'kelas'");
     if ($checkKelas && $checkKelas->num_rows === 0) {
         @$conn->query("ALTER TABLE courses ADD COLUMN kelas VARCHAR(10) AFTER ruang");
+    }
+
+    $checkLink = @$conn->query("SHOW COLUMNS FROM uploads LIKE 'link_url'");
+    if ($checkLink && $checkLink->num_rows === 0) {
+        @$conn->query("ALTER TABLE uploads ADD COLUMN link_url TEXT AFTER path_file");
+        @$conn->query("ALTER TABLE uploads MODIFY COLUMN nama_file VARCHAR(255) NULL");
+        @$conn->query("ALTER TABLE uploads MODIFY COLUMN path_file VARCHAR(255) NULL");
+        @$conn->query("ALTER TABLE uploads MODIFY COLUMN ukuran_file INT NULL DEFAULT 0");
+        @$conn->query("ALTER TABLE uploads MODIFY COLUMN mime_type VARCHAR(100) NULL");
     }
 } catch (Throwable $e) {
     http_response_code(500);
