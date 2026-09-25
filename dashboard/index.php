@@ -116,6 +116,10 @@ require_once __DIR__ . '/../includes/header.php';
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Jadwal Mandiri
         </a>
+        <button type="button" onclick="if(window.toggleRealtimeWidgetDrawer) window.toggleRealtimeWidgetDrawer()" class="btn btn-secondary btn-sm" title="Buka Realtime Widget (Jadwal & Deadline Hari Ini)">
+            <span class="live-pulse-dot" style="width: 7px; height: 7px;"></span>
+            Live Widget
+        </button>
     </div>
 </div>
 
@@ -256,6 +260,10 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 
     <div class="mq-chips-grid">
+        <button type="button" class="mq-chip mq-chip-btn" onclick="if(window.toggleRealtimeWidgetDrawer) window.toggleRealtimeWidgetDrawer()" style="background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: var(--accent);">
+            <span class="live-pulse-dot" style="width: 6px; height: 6px;"></span>
+            <span>Live Widget</span>
+        </button>
         <a href="<?= BASE_URL ?>/jadwal/" class="mq-chip">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span>Jadwal Mandiri</span>

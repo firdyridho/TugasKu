@@ -48,6 +48,11 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span>Kalender</span>
             </a>
+            <a href="<?= BASE_URL ?>/widget" class="nav-item" target="_blank" onclick="if(window.openWidgetPopup) window.openWidgetPopup(event)" title="Buka Realtime Widget (Jendela Mini)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Live Widget</span>
+                <span style="font-size:0.65rem; background:rgba(16,185,129,0.15); color:#10b981; padding:2px 6px; border-radius:10px; margin-left:auto; font-weight:700;">LIVE</span>
+            </a>
             <div class="nav-divider"></div>
             <a href="<?= BASE_URL ?>/ekspor" class="nav-item <?= strpos($currentScript, 'ekspor') !== false ? 'active' : '' ?>">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -104,12 +109,17 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
             <div class="topbar-right">
+                <button type="button" class="btn-topbar-widget" id="btnTopbarWidget" onclick="if(window.toggleRealtimeWidgetDrawer) window.toggleRealtimeWidgetDrawer()" title="Buka Realtime Widget (Jadwal & Deadline Hari Ini)">
+                    <span class="live-pulse-dot"></span>
+                    <span>Live Widget</span>
+                    <span class="widget-badge-count" id="topbarWidgetBadge" style="display:none;">0</span>
+                </button>
                 <button type="button" class="btn-tour-trigger" id="btnTourTrigger" onclick="openTugasKuTour(true)" title="Buka Panduan Pengguna (Tutorial)">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     <span>Panduan</span>
                 </button>
                 <span class="date-display">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span id="dateDisplay"></span>
                 </span>
                 <!-- Mobile User Profile & Logout Shortcut in Topbar -->

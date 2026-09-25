@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = sanitize($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
+        $remember = !empty($_POST['remember_me']);
+
         if (empty($email) || empty($password)) {
             $loginError = 'Silakan masukkan email dan kata sandi Anda.';
         } else {
@@ -24,6 +26,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
+
+                if ($remember) {
+                    $rawToken = bin2hex(random_bytes(32));
+                    $tokenHash = hash('sha256', $rawToken);
+                    $expiresAt = date('Y-m-d H:i:s', time() + (30 * 86400));
+
+                    $stmtTok = $conn->prepare('INSERT INTO remember_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)');
+                    if ($stmtTok) {
+                        $stmtTok->bind_param('iss', $user['id'], $tokenHash, $expiresAt);
+                        $stmtTok->execute();
+                    }
+
+                    setcookie('tugasku_remember', $user['id'] . ':' . $rawToken, [
+                        'expires' => time() + (30 * 86400),
+                        'path' => '/',
+                        'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+                        'httponly' => true,
+                        'samesite' => 'Lax'
+                    ]);
+                }
+
                 flash('success', 'Selamat datang kembali, ' . htmlspecialchars($user['nama']) . '!');
                 redirect('/dashboard/');
             } else {
@@ -232,6 +255,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eye-hide" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                         </button>
                     </div>
+                </div>
+
+                <div class="auth-remember-row" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; font-size: 0.85rem; color: #475569;">
+                    <label style="display: inline-flex; align-items: center; gap: 0.55rem; cursor: pointer; user-select: none;">
+                        <input type="checkbox" name="remember_me" id="remember_me" value="1" checked style="width: 17px; height: 17px; accent-color: #4f46e5; cursor: pointer; border-radius: 4px;">
+                        <span style="font-weight: 500; color: #334155;">Tetap masuk di perangkat ini</span>
+                    </label>
+                    <span style="font-size: 0.73rem; color: #6366f1; background: rgba(99,102,241,0.08); padding: 3px 8px; border-radius: 6px; font-weight: 600;">30 Hari</span>
                 </div>
 
                 <button type="submit" class="auth-submit-btn">

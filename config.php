@@ -1,11 +1,22 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
+    // If remember me cookie is present or user opted in, extend session cookie lifetime
+    if (!empty($_COOKIE['tugasku_remember'])) {
+        ini_set('session.gc_maxlifetime', 30 * 86400);
+        session_set_cookie_params([
+            'lifetime' => 30 * 86400,
+            'path' => '/',
+            'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+    }
     session_start();
 }
 date_default_timezone_set('Asia/Jakarta');
 
 // Versioning for static asset cache-busting
-if (!defined('APP_VERSION')) define('APP_VERSION', '2.6.4');
+if (!defined('APP_VERSION')) define('APP_VERSION', '2.6.5');
 
 // Load local/hosting configuration if present (e.g. on live web server)
 if (file_exists(__DIR__ . '/config_local.php')) {
@@ -50,6 +61,39 @@ try {
         @$conn->query("ALTER TABLE uploads MODIFY COLUMN path_file VARCHAR(255) NULL");
         @$conn->query("ALTER TABLE uploads MODIFY COLUMN ukuran_file INT NULL DEFAULT 0");
         @$conn->query("ALTER TABLE uploads MODIFY COLUMN mime_type VARCHAR(100) NULL");
+    }
+
+    // Auto-create remember_tokens table for persistent "Tetap Login"
+    @$conn->query("CREATE TABLE IF NOT EXISTS remember_tokens (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        token_hash VARCHAR(64) NOT NULL,
+        expires_at DATETIME NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_user (user_id),
+        INDEX idx_token (token_hash)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    // Auto-login from Remember Me cookie if session is not active
+    if (!isset($_SESSION['user_id']) && !empty($_COOKIE['tugasku_remember'])) {
+        $rememberParts = explode(':', $_COOKIE['tugasku_remember'], 2);
+        if (count($rememberParts) === 2) {
+            $cUserId = (int)$rememberParts[0];
+            $cToken = $rememberParts[1];
+            $cTokenHash = hash('sha256', $cToken);
+
+            $stmtRemember = $conn->prepare("SELECT user_id FROM remember_tokens WHERE user_id = ? AND token_hash = ? AND expires_at > NOW() LIMIT 1");
+            if ($stmtRemember) {
+                $stmtRemember->bind_param('is', $cUserId, $cTokenHash);
+                $stmtRemember->execute();
+                $tokenRow = $stmtRemember->get_result()->fetch_assoc();
+                if ($tokenRow) {
+                    $_SESSION['user_id'] = (int)$tokenRow['user_id'];
+                } else {
+                    setcookie('tugasku_remember', '', time() - 3600, '/');
+                }
+            }
+        }
     }
 } catch (Throwable $e) {
     http_response_code(500);
