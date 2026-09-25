@@ -91,6 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="auth-page">
 
+    <!-- Ambient Glowing Animated Orbs Background -->
+    <div class="auth-ambient-orb auth-orb-1" aria-hidden="true"></div>
+    <div class="auth-ambient-orb auth-orb-2" aria-hidden="true"></div>
+
     <div class="auth-sliding-box <?= $initialMode === 'register' ? 'mode-register' : '' ?>" id="authSlidingBox">
         
         <!-- Mobile Selector (Tabs on Small Devices) -->
@@ -101,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- 1. FORM DAFTAR (SIGN UP - KIRI) -->
         <div class="auth-form-side sign-up-form-side">
-            <form method="POST" action="<?= BASE_URL ?>/auth/login">
+            <form method="POST" action="<?= BASE_URL ?>/auth/login" id="registerForm">
                 <input type="hidden" name="auth_action" value="register">
 
                 <div style="margin-bottom: 1.25rem;">
@@ -182,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- 2. FORM MASUK (SIGN IN - KANAN) -->
         <div class="auth-form-side sign-in-form-side">
-            <form method="POST" action="<?= BASE_URL ?>/auth/login">
+            <form method="POST" action="<?= BASE_URL ?>/auth/login" id="loginForm">
                 <input type="hidden" name="auth_action" value="login">
 
                 <div style="margin-bottom: 1.25rem;">
@@ -193,6 +197,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <h2>Masuk ke Akun</h2>
                 <p class="auth-subtitle">Akses semua tugas, jadwal, dan deadline Anda kapan saja di satu tempat.</p>
+
+                <?php if (isset($_GET['status']) && $_GET['status'] === 'logged_out'): ?>
+                    <div class="auth-logout-alert">
+                        <div class="auth-logout-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div class="auth-logout-title">Sesi Berhasil Ditutup</div>
+                            <div class="auth-logout-text">Anda telah keluar secara aman. Sampai jumpa kembali!</div>
+                        </div>
+                        <button type="button" class="auth-logout-close" onclick="this.closest('.auth-logout-alert').remove()">&times;</button>
+                    </div>
+                <?php endif; ?>
 
                 <?php if ($loginError): ?>
                     <div class="alert alert-error" style="padding: 0.65rem 0.95rem; margin-bottom: 1.15rem;">
@@ -349,6 +366,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (alert) alert.remove();
                 });
             });
+
+            // Smooth Submit Loading Animation on Login & Register
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    const btn = this.querySelector('.auth-submit-btn');
+                    if (btn && !btn.disabled) {
+                        btn.classList.add('loading');
+                        btn.disabled = true;
+                        btn.innerHTML = '<span class="auth-btn-spinner"></span> Memverifikasi Akun...';
+                        this.submit();
+                    }
+                });
+            }
+
+            const regForm = document.getElementById('registerForm');
+            if (regForm) {
+                regForm.addEventListener('submit', function(e) {
+                    const btn = this.querySelector('.auth-submit-btn');
+                    if (btn && !btn.disabled) {
+                        btn.classList.add('loading');
+                        btn.disabled = true;
+                        btn.innerHTML = '<span class="auth-btn-spinner"></span> Mendaftarkan Akun...';
+                        this.submit();
+                    }
+                });
+            }
         });
 
         // Eye toggle function (used for both register & login forms)

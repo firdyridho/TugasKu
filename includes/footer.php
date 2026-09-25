@@ -57,7 +57,7 @@
             <button type="button" class="btn btn-secondary logout-btn-cancel" onclick="closeLogoutModal()">
                 Tetap di Sini
             </button>
-            <a href="<?= BASE_URL ?>/auth/logout" class="btn btn-danger logout-btn-confirm" id="confirmLogoutLink">
+            <a href="<?= BASE_URL ?>/auth/logout" class="btn btn-danger logout-btn-confirm" id="confirmLogoutLink" onclick="triggerLogoutAnimation(event, this)">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                     <polyline points="16 17 21 12 16 7"></polyline>
@@ -65,6 +65,30 @@
                 </svg>
                 Ya, Keluar
             </a>
+        </div>
+    </div>
+</div>
+
+<!-- Fullscreen Modern Logout Transition Overlay -->
+<div id="logoutScreenOverlay" class="logout-screen-overlay" aria-hidden="true">
+    <div class="logout-screen-backdrop"></div>
+    <div class="logout-screen-card">
+        <div class="logout-spinner-wrap">
+            <div class="logout-spinner-ring"></div>
+            <div class="logout-screen-icon-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="logout-screen-brand">
+            Tugas<span style="font-style: italic; color: #818cf8;">Ku</span><span style="color: #818cf8;">.</span>
+        </div>
+        <h3 class="logout-screen-title">Mengamankan Sesi...</h3>
+        <p class="logout-screen-sub">Menutup akun secara aman dan menghapus data sesi aktif.</p>
+        <div class="logout-progress-bar">
+            <div class="logout-progress-fill"></div>
         </div>
     </div>
 </div>
@@ -87,6 +111,26 @@
             modal.classList.remove('active');
             document.body.style.overflow = '';
         }
+    }
+
+    function triggerLogoutAnimation(event, link) {
+        if (event) event.preventDefault();
+        const targetUrl = link ? link.getAttribute('href') : (window.BASE_URL + '/auth/logout');
+        
+        // 1. Tutup modal konfirmasi
+        closeLogoutModal();
+
+        // 2. Munculkan fullscreen overlay transisi
+        const overlay = document.getElementById('logoutScreenOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 3. Redirect mulus setelah animasi bar progress selesai (850ms)
+        setTimeout(function() {
+            window.location.href = targetUrl;
+        }, 850);
     }
 
     document.addEventListener('keydown', function(e) {
