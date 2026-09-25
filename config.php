@@ -7,10 +7,10 @@ if (file_exists(__DIR__ . '/config_local.php')) {
     require_once __DIR__ . '/config_local.php';
 }
 
-if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'root');
-if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
-if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'tugasku_db');
+if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: 'sql101.infinityfree.com');
+if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'if0_42968898');
+if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : 'FOF3RwgiSuq');
+if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'if0_42968898_tugasku');
 
 if (!defined('BASE_URL')) {
     $uri = $_SERVER['REQUEST_URI'] ?? '';
@@ -36,18 +36,21 @@ if ($checkKelas && $checkKelas->num_rows === 0) {
 }
 // ─────────────────────────────────────────────────────────────────────
 
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_id']);
 }
 
-function requireLogin() {
+function requireLogin()
+{
     if (!isLoggedIn()) {
         header('Location: ' . BASE_URL . '/auth/login');
         exit;
     }
 }
 
-function getUser() {
+function getUser()
+{
     global $conn;
     if (!isLoggedIn()) return null;
     $stmt = $conn->prepare('SELECT * FROM users WHERE id = ?');
@@ -56,17 +59,20 @@ function getUser() {
     return $stmt->get_result()->fetch_assoc();
 }
 
-function redirect($path) {
+function redirect($path)
+{
     header('Location: ' . BASE_URL . $path);
     exit;
 }
 
-function sanitize($data) {
+function sanitize($data)
+{
     global $conn;
     return $conn->real_escape_string(htmlspecialchars(trim($data)));
 }
 
-function flash($key, $message = null) {
+function flash($key, $message = null)
+{
     if ($message !== null) {
         $_SESSION['flash'][$key] = $message;
     } else {
