@@ -5,6 +5,16 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      server_dir:
+        description: 'Folder tujuan di hosting (InfinityFree: htdocs/)'
+        required: false
+        default: 'htdocs/'
+      clean_slate:
+        description: 'Upload ulang semua file dari awal'
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   web-deploy:
@@ -22,8 +32,10 @@ jobs:
           server: ${{ secrets.FTP_HOSTNAME }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Folder tujuan di server hosting (default './', atau atur secret FTP_SERVER_DIR misal 'public_html/')
-          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+          # InfinityFree mewajibkan file website berada di dalam folder htdocs/
+          server-dir: ${{ github.event.inputs.server_dir || secrets.FTP_SERVER_DIR || 'htdocs/' }}
+          dangerous-clean-slate: ${{ github.event.inputs.clean_slate == 'true' }}
+          log-level: verbose
           exclude: |
             **/.git*
             **/.git*/**
