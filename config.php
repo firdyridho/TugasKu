@@ -74,12 +74,6 @@ try {
         INDEX idx_token (token_hash)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-    // Auto-create widget_token column in users table
-    $checkWidgetToken = @$conn->query("SHOW COLUMNS FROM users LIKE 'widget_token'");
-    if ($checkWidgetToken && $checkWidgetToken->num_rows === 0) {
-        @$conn->query("ALTER TABLE users ADD COLUMN widget_token VARCHAR(64) NULL UNIQUE AFTER password");
-    }
-
     // Auto-login from Remember Me cookie if session is not active
     if (!isset($_SESSION['user_id']) && !empty($_COOKIE['tugasku_remember'])) {
         $rememberParts = explode(':', $_COOKIE['tugasku_remember'], 2);
@@ -194,35 +188,4 @@ function flash($key, $message = null)
     }
 }
 
-function getUserWidgetToken($userId)
-{
-    global $conn;
-    $stmt = $conn->prepare("SELECT widget_token FROM users WHERE id = ?");
-    if (!$stmt) return null;
-    $stmt->bind_param('i', $userId);
-    $stmt->execute();
-    $row = $stmt->get_result()->fetch_assoc();
-    if (!empty($row['widget_token'])) {
-        return $row['widget_token'];
-    }
-    // Generate new secure 32-character token
-    $newToken = bin2hex(random_bytes(16));
-    $up = $conn->prepare("UPDATE users SET widget_token = ? WHERE id = ?");
-    if ($up) {
-        $up->bind_param('si', $newToken, $userId);
-        $up->execute();
-    }
-    return $newToken;
-}
-
-function getUserByWidgetToken($token)
-{
-    global $conn;
-    if (empty($token) || strlen($token) < 16) return null;
-    $stmt = $conn->prepare("SELECT * FROM users WHERE widget_token = ? LIMIT 1");
-    if (!$stmt) return null;
-    $stmt->bind_param('s', $token);
-    $stmt->execute();
-    return $stmt->get_result()->fetch_assoc();
-}
 

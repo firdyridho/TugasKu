@@ -295,19 +295,6 @@ switch ($action) {
         redirect('/setting/');
         break;
 
-    case 'reset_widget_token':
-        $newToken = bin2hex(random_bytes(16));
-        $stmt = $conn->prepare('UPDATE users SET widget_token = ? WHERE id = ?');
-        if ($stmt) {
-            $stmt->bind_param('si', $newToken, $userId);
-            $stmt->execute();
-            flash('success', 'Token widget berhasil diperbarui. Tautan widget baru Anda siap digunakan.');
-        } else {
-            flash('error', 'Gagal memperbarui token widget.');
-        }
-        redirect('/setting/?tab=widget');
-        break;
-
     default:
         redirect('/dashboard/');
 }

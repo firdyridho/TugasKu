@@ -35,10 +35,6 @@ require_once __DIR__ . '/../includes/header.php';
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     Ubah Password
                 </button>
-                <button type="button" class="setting-menu-item" id="menuWidget" onclick="switchTab('Widget')">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    Widget Desktop & HP
-                </button>
             </div>
         </div>
 
@@ -193,107 +189,6 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
             </div>
         </div>
-
-        <?php
-        $widgetToken = getUserWidgetToken($userId);
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        $fullWidgetUrl = $protocol . $host . BASE_URL . '/widget?token=' . urlencode($widgetToken);
-        $weatherWidgetUrl = $protocol . $host . BASE_URL . '/widget/weather?token=' . urlencode($widgetToken);
-        ?>
-        <!-- === TAB: WIDGET EKSTERNAL (DESKTOP & HP) === -->
-        <div class="setting-section" id="sectionWidget">
-            <div class="setting-card">
-                <div class="setting-card-header">
-                    <div class="setting-card-icon" style="background: rgba(99,102,241,0.12); color: var(--accent);">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
-                    <div>
-                        <h3>Widget Eksternal & Layar Utama HP (Model Cuaca)</h3>
-                        <p>Pantau jadwal hari ini dan deadline tugas langsung di home screen HP atau desktop seperti widget cuaca tanpa perlu buka web/login.</p>
-                    </div>
-                </div>
-                <div class="setting-card-body">
-                    <!-- 1. Tautan Widget Model Cuaca (Khusus Home Screen HP) -->
-                    <div class="form-group" style="background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 1rem;">
-                        <label style="font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
-                            🌤️ Tautan Widget Model Cuaca (Khusus Home Screen Android / iOS)
-                        </label>
-                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.35rem;">
-                            <input type="text" class="form-control" id="weatherWidgetLinkSetting" value="<?= htmlspecialchars($weatherWidgetUrl) ?>" readonly style="font-family: monospace; font-size: 0.82rem; background: var(--bg-hover);">
-                            <button type="button" class="btn btn-primary" onclick="copyWeatherWidgetUrl()" id="btnCopyWeather" style="white-space: nowrap;">
-                                Salin Link Cuaca
-                            </button>
-                        </div>
-                        <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem; display: block; line-height: 1.5;">
-                            Tampilan transparan melengkung (frosted glass) yang dirancang khusus untuk ditempel di wallpaper layar HP melalui widget Android.
-                        </span>
-                    </div>
-
-                    <!-- 2. Tautan Widget Penuh -->
-                    <div class="form-group">
-                        <label>Tautan Widget Interaktif Standalone (Desktop & Browser)</label>
-                        <div style="display: flex; gap: 0.5rem; align-items: center;">
-                            <input type="text" class="form-control" id="widgetLinkSetting" value="<?= htmlspecialchars($fullWidgetUrl) ?>" readonly style="font-family: monospace; font-size: 0.82rem; background: var(--bg-hover);">
-                            <button type="button" class="btn btn-secondary" onclick="copyWidgetUrlSetting()" id="btnCopySetting" style="white-space: nowrap;">
-                                Salin Link
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 3. Tombol Aksi Langsung -->
-                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                        <a href="<?= htmlspecialchars($weatherWidgetUrl) ?>" target="_blank" class="btn btn-primary btn-sm">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
-                            Preview Widget Model Cuaca
-                        </a>
-                        <a href="<?= BASE_URL ?>/widget/download-shortcut?token=<?= urlencode($widgetToken) ?>" class="btn btn-secondary btn-sm">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Unduh Launcher Windows (.bat)
-                        </a>
-                        <form method="POST" action="<?= BASE_URL ?>/proses" style="display: inline;" onsubmit="return confirm('Reset token widget? Tautan widget yang lama tidak akan bisa diakses lagi.')">
-                            <input type="hidden" name="action" value="reset_widget_token">
-                            <button type="submit" class="btn btn-danger-ghost btn-sm">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-                                Reset Token Baru
-                            </button>
-                        </form>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
-                        <!-- Panduan Pasang di Home Screen HP seperti Widget Cuaca -->
-                        <div style="background: var(--bg-hover); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem;">
-                            <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem;">
-                                📱 Cara Pasang Widget di Layar HP (Home Screen)
-                            </div>
-                            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.45;">
-                                Karena Web2App hanya membuat APK aplikasi pembuka (bukan widget wallpaper), untuk memunculkan widget mengambang di layar utama HP seperti widget cuaca bawaan:
-                            </p>
-                            <ol style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.15rem; margin: 0;">
-                                <li>Salin <strong>"Tautan Widget Model Cuaca"</strong> di atas.</li>
-                                <li>Di HP Android, buka Play Store &amp; install aplikasi gratis <strong>"Web Widget"</strong> (atau <em>"WebView Widget"</em>).</li>
-                                <li>Di layar utama HP, tekan lama layar kosong &gt; pilih <strong>Widget</strong> &gt; pilih <strong>Web Widget</strong>.</li>
-                                <li>Tempel (Paste) link widget TugasKu di atas.</li>
-                                <li>Selesai! Widget jadwal &amp; DL tugas langsung nempel di wallpaper HP seperti widget cuaca!</li>
-                            </ol>
-                        </div>
-
-                        <!-- Panduan Desktop Windows -->
-                        <div style="background: var(--bg-hover); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem;">
-                            <div style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem;">
-                                💻 Pasang di Desktop Komputer (Windows)
-                            </div>
-                            <ol style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.15rem; margin: 0;">
-                                <li>Klik tombol <strong>"Unduh Launcher Windows (.bat)"</strong> di atas.</li>
-                                <li>Pindahkan file ke Desktop atau sematkan di Taskbar.</li>
-                                <li>Klik 2x pada file tersebut, widget akan langsung terbuka mengambang tanpa browser bar!</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -307,53 +202,11 @@ function switchTab(tab) {
     if (mnu) mnu.classList.add('active');
 }
 
-function copyWeatherWidgetUrl() {
-    const inp = document.getElementById('weatherWidgetLinkSetting');
-    const btn = document.getElementById('btnCopyWeather');
-    if (inp) {
-        inp.select();
-        navigator.clipboard.writeText(inp.value).then(() => {
-            if (btn) {
-                btn.textContent = 'Tersalin!';
-                setTimeout(() => btn.textContent = 'Salin Link Cuaca', 2000);
-            }
-        }).catch(() => {
-            document.execCommand('copy');
-            if (btn) {
-                btn.textContent = 'Tersalin!';
-                setTimeout(() => btn.textContent = 'Salin Link Cuaca', 2000);
-            }
-        });
-    }
-}
-
-function copyWidgetUrlSetting() {
-    const inp = document.getElementById('widgetLinkSetting');
-    const btn = document.getElementById('btnCopySetting');
-    if (inp) {
-        inp.select();
-        navigator.clipboard.writeText(inp.value).then(() => {
-            if (btn) {
-                btn.textContent = 'Tersalin!';
-                setTimeout(() => btn.textContent = 'Salin Link', 2000);
-            }
-        }).catch(() => {
-            document.execCommand('copy');
-            if (btn) {
-                btn.textContent = 'Tersalin!';
-                setTimeout(() => btn.textContent = 'Salin Link', 2000);
-            }
-        });
-    }
-}
-
 // Auto open tab from query string
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab');
-    if (tab === 'widget') {
-        switchTab('Widget');
-    } else if (tab === 'password') {
+    if (tab === 'password') {
         switchTab('Password');
     }
 });

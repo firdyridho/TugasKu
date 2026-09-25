@@ -146,7 +146,6 @@
 </script>
 <script src="<?= BASE_URL ?>/assets/js/app.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/ai-assistant.js"></script>
-<script src="<?= BASE_URL ?>/assets/js/widget-drawer.js"></script>
 </body>
 </html>
 
