@@ -14,7 +14,7 @@ $loggedIn = isLoggedIn();
     <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
 
     <meta name="description" content="Platform produktivitas mahasiswa terpadu: kelola tugas kuliah, kegiatan organisasi, jadwal mingguan, kalender akademik, dan ekspor Google Sheets dalam satu tampilan elegan dan rapi.">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css?v=<?= defined('APP_VERSION') ? APP_VERSION : '2.6.1' ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">

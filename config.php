@@ -4,6 +4,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 date_default_timezone_set('Asia/Jakarta');
 
+// Versioning for static asset cache-busting
+if (!defined('APP_VERSION')) define('APP_VERSION', '2.6.1');
+
 // Load local/hosting configuration if present (e.g. on live web server)
 if (file_exists(__DIR__ . '/config_local.php')) {
     require_once __DIR__ . '/config_local.php';

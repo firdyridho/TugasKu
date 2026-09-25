@@ -25,7 +25,7 @@ $dbLatency = round((microtime(true) - $dbPingStart) * 1000, 1);
     <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
 
     <meta name="description" content="Status operasional dan uptime real-time server, basis data, dan layanan platform TugasKu.">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css?v=<?= defined('APP_VERSION') ? APP_VERSION : '2.6.1' ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">

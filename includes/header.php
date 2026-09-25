@@ -13,7 +13,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
     <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
     <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
 
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css?v=<?= defined('APP_VERSION') ? APP_VERSION : '2.6.1' ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -72,7 +72,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
         </div>
     </aside>
 
-    <!-- Mobile Bottom Navigation (4 Menu Utama Tanpa Numpuk) -->
+    <!-- Mobile Bottom Navigation (5 Menu Utama Rapi & Tidak Numpuk) -->
     <nav class="mobile-bottom-nav" id="mobileBottomNav" role="navigation" aria-label="Navigasi utama">
         <div class="mobile-bottom-nav-inner">
             <a href="<?= BASE_URL ?>/dashboard/" class="mobile-nav-item <?= strpos($currentScript, 'dashboard') !== false ? 'active' : '' ?>" aria-label="Dashboard">
@@ -90,6 +90,10 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
             <a href="<?= BASE_URL ?>/kalender/" class="mobile-nav-item <?= strpos($currentScript, 'kalender') !== false ? 'active' : '' ?>" aria-label="Kalender">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span>Kalender</span>
+            </a>
+            <a href="<?= BASE_URL ?>/setting/" class="mobile-nav-item <?= strpos($currentScript, 'setting') !== false ? 'active' : '' ?>" aria-label="Akun">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Akun</span>
             </a>
         </div>
     </nav>
