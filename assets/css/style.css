@@ -1876,14 +1876,14 @@ textarea.form-control {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 4px;
     color: var(--text-muted);
-    font-size: 0.62rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.01em;
     text-decoration: none;
     transition: all 150ms ease;
-    padding: 6px 4px;
+    padding: 8px 4px 6px;
     border-radius: 0;
     position: relative;
 }
@@ -1899,8 +1899,8 @@ textarea.form-control {
 .mobile-nav-item.active::before {
     content: '';
     position: absolute;
-    top: 0; left: 20%; right: 20%;
-    height: 2.5px;
+    top: 0; left: 24%; right: 24%;
+    height: 3px;
     background: var(--accent);
     border-radius: 0 0 3px 3px;
 }
@@ -4814,5 +4814,304 @@ textarea.form-control {
         display: none;
     }
 }
+
+/* ==========================================================================
+   MOBILE TOPBAR ACTIONS (PROFILE & LOGOUT SHORTCUT)
+   ========================================================================== */
+.mobile-topbar-actions {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .mobile-topbar-user {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: transform 150ms ease;
+    }
+
+    .mobile-topbar-user:active {
+        transform: scale(0.92);
+    }
+
+    .mobile-user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--accent-gradient);
+        color: #ffffff;
+        font-size: 0.82rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+    }
+
+    .mobile-topbar-logout {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.35rem 0.65rem;
+        border-radius: 8px;
+        background: #fee2e2;
+        border: 1px solid #fca5a5;
+        color: #dc2626;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 150ms ease;
+        line-height: 1;
+    }
+
+    .mobile-topbar-logout svg {
+        flex-shrink: 0;
+    }
+
+    .mobile-topbar-logout:hover,
+    .mobile-topbar-logout:active {
+        background: #fecaca;
+        transform: translateY(-1px);
+    }
+}
+
+/* ==========================================================================
+   MOBILE DASHBOARD HUB (DEDICATED QUICK MENU & LOGOUT SECTION)
+   ========================================================================== */
+.mobile-dashboard-hub {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-dashboard-hub {
+        display: block;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Sembunyikan tombol tumpuk di welcome banner HP karena sudah tergabung di Mobile Hub */
+    .welcome-actions {
+        display: none !important;
+    }
+
+    /* Hub User Quick Card */
+    .hub-user-card {
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(124, 58, 237, 0.03) 100%);
+        border: 1px solid rgba(79, 70, 229, 0.18);
+        border-radius: var(--radius);
+        padding: 0.85rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 1.15rem;
+        box-shadow: 0 2px 10px rgba(79, 70, 229, 0.05);
+    }
+
+    .hub-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--accent-gradient);
+        color: #ffffff;
+        font-size: 1.15rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.28);
+    }
+
+    .hub-user-meta {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hub-user-greeting {
+        font-size: 0.68rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--accent);
+    }
+
+    .hub-user-name {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+    }
+
+    .hub-user-nim {
+        font-size: 0.76rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hub-quick-logout {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+        border-radius: 8px;
+        padding: 0.45rem 0.75rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-decoration: none;
+        flex-shrink: 0;
+        transition: all 150ms ease;
+    }
+
+    .hub-quick-logout:hover,
+    .hub-quick-logout:active {
+        background: #fecaca;
+        transform: translateY(-1px);
+    }
+
+    /* Section Title */
+    .hub-section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        padding: 0 0.2rem;
+    }
+
+    .hub-section-title svg {
+        color: var(--accent);
+    }
+
+    /* Hub Grid */
+    .hub-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.65rem;
+    }
+
+    .hub-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.75rem 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        text-decoration: none;
+        position: relative;
+        transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .hub-card:active {
+        transform: scale(0.97);
+        background: var(--bg-hover);
+    }
+
+    .hub-card-btn {
+        width: 100%;
+        cursor: pointer;
+        font-family: inherit;
+        text-align: left;
+    }
+
+    .hub-card-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .hub-card-icon.blue { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
+    .hub-card-icon.purple { background: rgba(139, 92, 246, 0.12); color: #7c3aed; }
+    .hub-card-icon.yellow { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+    .hub-card-icon.green { background: rgba(16, 185, 129, 0.12); color: #059669; }
+    .hub-card-icon.teal { background: rgba(20, 184, 166, 0.12); color: #0d9488; }
+    .hub-card-icon.slate { background: rgba(100, 116, 139, 0.12); color: #475569; }
+    .hub-card-icon.amber { background: rgba(245, 158, 11, 0.14); color: #b45309; }
+    .hub-card-icon.red { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+
+    .hub-card-content {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hub-card-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hub-card-desc {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        line-height: 1.2;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hub-card-badge {
+        font-size: 0.68rem;
+        font-weight: 700;
+        background: var(--bg-hover);
+        color: var(--text-secondary);
+        padding: 2px 6px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    /* Distinctive Logout Card in Grid */
+    .hub-card-logout {
+        border-color: rgba(239, 68, 68, 0.28);
+        background: linear-gradient(135deg, rgba(254, 226, 226, 0.35) 0%, var(--bg-card) 100%);
+    }
+
+    .hub-card-logout .hub-card-title {
+        color: #dc2626;
+    }
+
+    .hub-card-logout:hover,
+    .hub-card-logout:active {
+        border-color: #ef4444;
+        background: rgba(254, 226, 226, 0.55);
+    }
+}
+
+@media (max-width: 360px) {
+    .hub-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 
