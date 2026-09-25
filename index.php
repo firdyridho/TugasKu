@@ -34,11 +34,17 @@ $loggedIn = isLoggedIn();
             --emerald-600: #059669;
         }
 
-        body.landing-body {
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body.landing-body {
             background: #ffffff;
             color: #0f172a;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
             margin: 0;
             padding: 0;
         }
@@ -183,6 +189,8 @@ $loggedIn = isLoggedIn();
             position: relative;
             overflow: hidden;
             text-align: center;
+            width: 100%;
+            max-width: 100vw;
         }
 
         .lp-hero::before {
@@ -229,6 +237,7 @@ $loggedIn = isLoggedIn();
             position: relative;
             z-index: 1;
             max-width: 860px;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -247,6 +256,8 @@ $loggedIn = isLoggedIn();
             margin-bottom: 1.75rem;
             text-decoration: none;
             transition: all 150ms ease;
+            max-width: 100%;
+            text-align: left;
         }
 
         .lp-hero-pill:hover {
@@ -255,12 +266,14 @@ $loggedIn = isLoggedIn();
         }
 
         .lp-hero-title {
-            font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
             font-weight: 800;
             letter-spacing: -0.04em;
-            line-height: 1.12;
+            line-height: 1.14;
             color: #0f172a;
             margin: 0 0 1.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .gradient-word {
@@ -533,6 +546,18 @@ $loggedIn = isLoggedIn();
             font-size: 0.75rem;
             color: #64748b;
             margin-top: 0.2rem;
+        }
+
+        .lp-mockup-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .preview-org-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
         }
 
         /* ===== STATS STRIP ===== */
@@ -1124,9 +1149,67 @@ $loggedIn = isLoggedIn();
         @media (max-width: 640px) {
             .lp-nav-links { display: none; }
             .lp-nav-mobile-actions { display: flex; }
+            
+            /* Hero Mobile Fit */
+            .lp-hero {
+                padding: 6.25rem 1rem 3rem;
+                min-height: auto;
+            }
+            .lp-hero-title {
+                font-size: clamp(1.8rem, 6.8vw, 2.35rem);
+                letter-spacing: -0.03em;
+                line-height: 1.18;
+                margin-bottom: 1rem;
+            }
+            .lp-hero-sub {
+                font-size: 0.92rem;
+                line-height: 1.6;
+                margin-bottom: 1.75rem;
+                padding: 0 0.25rem;
+            }
+            .lp-hero-pill {
+                padding: 0.35rem 0.85rem;
+                font-size: 0.76rem;
+                border-radius: 12px;
+                margin-bottom: 1.25rem;
+                line-height: 1.35;
+            }
+            .lp-hero-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.65rem;
+                margin-bottom: 2.25rem;
+            }
+            .lp-btn-hero-primary,
+            .lp-btn-hero-secondary {
+                width: 100%;
+                justify-content: center;
+                padding: 0.85rem 1.5rem;
+                font-size: 0.92rem;
+            }
+            .lp-mockup-frame {
+                border-radius: 14px;
+            }
+            .lp-mockup-topbar {
+                padding: 0.65rem 0.85rem;
+            }
+            .lp-mockup-url {
+                display: none;
+            }
+            .lp-mockup-tabs {
+                padding: 0 0.25rem;
+            }
+            .lp-tab-btn {
+                padding: 0.65rem 0.85rem;
+                font-size: 0.78rem;
+            }
+            .lp-tab-panel {
+                padding: 1.1rem 0.85rem;
+            }
+
             .lp-bento { grid-template-columns: 1fr; }
             .lp-bento-card.wide { grid-column: span 1; }
-            .lp-stats-strip { grid-template-columns: 1fr 1fr; }
+            .lp-stats-strip { grid-template-columns: 1fr 1fr; margin-top: 2rem; }
             .lp-stat-item:nth-child(2) { border-right: none; }
             .lp-stat-item:nth-child(1), .lp-stat-item:nth-child(2) { border-bottom: 1px solid rgba(37,99,235,0.1); }
             .preview-grid-3 { grid-template-columns: 1fr; }
@@ -1135,12 +1218,21 @@ $loggedIn = isLoggedIn();
         }
 
         @media (max-width: 480px) {
+            .lp-hero {
+                padding: 5.5rem 0.75rem 2.25rem;
+            }
+            .lp-hero-title {
+                font-size: 1.65rem;
+            }
+            .lp-hero-blob-1,
+            .lp-hero-blob-2 {
+                display: none;
+            }
             .lp-uptime-pill { display: none; }
-            .lp-stats-strip { grid-template-columns: 1fr; }
-            .lp-stat-item { border-right: none !important; border-bottom: 1px solid rgba(37,99,235,0.1); }
+            .lp-stats-strip { grid-template-columns: 1fr; margin-top: 1.5rem; border-radius: 14px; }
+            .lp-stat-item { border-right: none !important; border-bottom: 1px solid rgba(37,99,235,0.1); padding: 1.1rem 0.75rem; }
+            .lp-stat-num { font-size: 1.55rem; }
             .preview-tt-grid { grid-template-columns: 1fr; }
-            .lp-hero-actions { flex-direction: column; width: 100%; }
-            .lp-hero-actions .lp-btn-cta, .lp-hero-actions .lp-btn-outline { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -1238,8 +1330,8 @@ $loggedIn = isLoggedIn();
 
         <div class="lp-hero-content">
             <a href="<?= BASE_URL ?>/changelog" class="lp-hero-pill">
-                <span class="lp-pulse-dot"></span>
-                <span>Update v2.4: Ekspor Google Sheets, Timetable 7-Hari & Keamanan Akun &rarr;</span>
+                <span class="lp-pulse-dot" style="flex-shrink:0;"></span>
+                <span>Update v2.4: Google Sheets, Timetable 7-Hari & Keamanan &rarr;</span>
             </a>
 
             <h1 class="lp-hero-title">
@@ -1325,42 +1417,44 @@ $loggedIn = isLoggedIn();
                             </div>
                         </div>
 
-                        <table class="preview-table">
-                            <thead>
-                                <tr>
-                                    <th>Nama Tugas / Agenda</th>
-                                    <th>Kategori</th>
-                                    <th>Tenggat Waktu</th>
-                                    <th>Status Urgensi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Makalah Sistem Basis Data Terdistribusi</strong></td>
-                                    <td>Kuliah (IF-302)</td>
-                                    <td>Hari Ini, 23:59 WIB</td>
-                                    <td><span class="preview-urgency-pill danger">Hari Ini</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Proposal Sponsorship Seminar Nasional</strong></td>
-                                    <td>BEM Fakultas</td>
-                                    <td>Besok, 12:00 WIB</td>
-                                    <td><span class="preview-urgency-pill warning">Besok</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Review Jurnal Kecerdasan Buatan</strong></td>
-                                    <td>Kuliah (IF-401)</td>
-                                    <td>3 Hari Lagi</td>
-                                    <td><span class="preview-urgency-pill info">3 Hari Lagi</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Latihan Algoritma Pemrograman Mandiri</strong></td>
-                                    <td>Jadwal Mandiri</td>
-                                    <td>Selesai</td>
-                                    <td><span class="preview-urgency-pill success">Selesai</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="lp-mockup-table-wrap">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Tugas / Agenda</th>
+                                        <th>Kategori</th>
+                                        <th>Tenggat Waktu</th>
+                                        <th>Status Urgensi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Makalah Sistem Basis Data Terdistribusi</strong></td>
+                                        <td>Kuliah (IF-302)</td>
+                                        <td>Hari Ini, 23:59 WIB</td>
+                                        <td><span class="preview-urgency-pill danger">Hari Ini</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Proposal Sponsorship Seminar Nasional</strong></td>
+                                        <td>BEM Fakultas</td>
+                                        <td>Besok, 12:00 WIB</td>
+                                        <td><span class="preview-urgency-pill warning">Besok</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Review Jurnal Kecerdasan Buatan</strong></td>
+                                        <td>Kuliah (IF-401)</td>
+                                        <td>3 Hari Lagi</td>
+                                        <td><span class="preview-urgency-pill info">3 Hari Lagi</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Latihan Algoritma Pemrograman Mandiri</strong></td>
+                                        <td>Jadwal Mandiri</td>
+                                        <td>Selesai</td>
+                                        <td><span class="preview-urgency-pill success">Selesai</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- Panel 2: Timetable Kuliah -->
@@ -1395,7 +1489,7 @@ $loggedIn = isLoggedIn();
 
                     <!-- Panel 3: Organisasi -->
                     <div class="lp-tab-panel" id="tab-organisasi">
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+                        <div class="preview-org-grid">
                             <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;">
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
                                     <h4 style="margin:0;font-size:1rem;color:#0f172a;">BEM Fakultas Ilmu Komputer</h4>
