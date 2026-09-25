@@ -7,8 +7,8 @@
     let isAiBusy = false;
     let thinkingInterval = null;
 
-    // Detect BASE_URL
-    const baseUrl = window.BASE_URL || '/TugasKu';
+    // Detect BASE_URL safely (preserves empty string '' on live deployment root)
+    const baseUrl = (typeof window.BASE_URL === 'string') ? window.BASE_URL : (window.BASE_URL || '');
 
     // Sleek Quantum Neural Spark AI Glyph (Clean & Futuristic)
     function getAiSparkSvg(size = 17, className = "") {
@@ -553,7 +553,7 @@
         showTypingIndicator();
 
         try {
-            const response = await fetch(baseUrl + '/api/ai', {
+            const response = await fetch(baseUrl + '/api/ai.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -578,7 +578,7 @@
             }
         } catch (err) {
             removeTypingIndicator();
-            appendMessage('ai', 'Gagal terhubung ke layanan AI. Pastikan server lokal aktif.');
+            appendMessage('ai', 'Gagal terhubung ke layanan AI. Silakan coba beberapa saat lagi.');
         } finally {
             isAiBusy = false;
             if (sendBtn) sendBtn.disabled = false;

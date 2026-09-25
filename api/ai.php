@@ -261,12 +261,16 @@ $messages[] = [
 ];
 
 // Active verified NVIDIA NIM Models
-$apiKey = "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";
+$apiKey = defined('NVIDIA_API_KEY') ? NVIDIA_API_KEY : (getenv('NVIDIA_API_KEY') ?: "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");
 $primaryModel = "meta/llama-3.2-11b-vision-instruct";
 $fallbackModel = "openai/gpt-oss-20b";
 $endpoint = "https://integrate.api.nvidia.com/v1/chat/completions";
 
-function callNvidiaModel($endpoint, $apiKey, $model, $messages, $timeout = 25) {
+function callNvidiaModel($endpoint, $apiKey, $model, $messages, $timeout = 6) {
+    if (!function_exists('curl_init')) {
+        return ['code' => 0, 'response' => null, 'error' => 'cURL not enabled'];
+    }
+
     $postPayload = [
         'model' => $model,
         'messages' => $messages,
@@ -286,13 +290,13 @@ function callNvidiaModel($endpoint, $apiKey, $model, $messages, $timeout = 25) {
         ],
         CURLOPT_POSTFIELDS => json_encode($postPayload),
         CURLOPT_TIMEOUT => $timeout,
-        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_CONNECTTIMEOUT => 3,
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_SSL_VERIFYHOST => false
     ]);
 
     $result = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
     curl_close($ch);
 
@@ -394,13 +398,14 @@ function generateAcademicFallbackWithDb($msg, $name, $jurusan, $courses, $course
         . "Silakan ajukan pertanyaan Anda!";
 }
 
-// Try primary verified model first
-$apiResult = callNvidiaModel($endpoint, $apiKey, $primaryModel, $messages, 25);
+// Try primary verified model first (fast 6s timeout)
+$apiResult = callNvidiaModel($endpoint, $apiKey, $primaryModel, $messages, 6);
 $activeModel = $primaryModel;
 
-// If primary model failed, try secondary fallback model
-if ($apiResult['code'] !== 200 || empty($apiResult['response'])) {
-    $fallbackResult = callNvidiaModel($endpoint, $apiKey, $fallbackModel, $messages, 25);
+// If primary model failed due to HTTP rate limit or server error (and NOT a network/firewall blockage), try fallback
+$isBlockedOrOffline = ($apiResult['code'] === 0) || !empty($apiResult['error']);
+if (!$isBlockedOrOffline && $apiResult['code'] !== 200) {
+    $fallbackResult = callNvidiaModel($endpoint, $apiKey, $fallbackModel, $messages, 6);
     if ($fallbackResult['code'] === 200 && !empty($fallbackResult['response'])) {
         $apiResult = $fallbackResult;
         $activeModel = $fallbackModel;
