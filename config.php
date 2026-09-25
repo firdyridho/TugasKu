@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Jakarta');
 
 // Load local/hosting configuration if present (e.g. on live web server)
 if (file_exists(__DIR__ . '/config_local.php')) {
@@ -25,6 +26,7 @@ if ($conn->connect_error) {
     die('Koneksi database gagal: ' . $conn->connect_error);
 }
 $conn->set_charset('utf8mb4');
+$conn->query("SET time_zone = '+07:00'");
 
 // ── Auto Migrations ──────────────────────────────────────────────────
 // Add kelas column to courses if it doesn't exist
