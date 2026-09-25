@@ -16,6 +16,7 @@ RewriteRule ^privacy/?$ privacy.php [L,QSA]
 RewriteRule ^ekspor/?$ ekspor.php [L,QSA]
 RewriteRule ^proses/?$ proses.php [L,QSA]
 RewriteRule ^widget/?$ widget/index.php [L,QSA]
+RewriteRule ^widget/weather/?$ widget/weather.php [L,QSA]
 RewriteRule ^api/widget/?$ api/widget.php [L,QSA]
 
 # Auth routes
