@@ -37,6 +37,21 @@ require_once __DIR__ . '/../includes/header.php';
                 </button>
             </div>
         </div>
+
+        <!-- Session & Logout Card -->
+        <div class="setting-sidebar-card" style="margin-top: 1rem; border-color: rgba(239, 68, 68, 0.25);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--danger); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.45rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Sesi Akun
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.85rem; line-height: 1.45;">
+                Keluar dari sesi ini jika Anda telah selesai atau memakai perangkat bersama.
+            </p>
+            <a href="<?= BASE_URL ?>/auth/logout" class="btn btn-danger btn-sm" onclick="openLogoutModal(event)" style="width: 100%; justify-content: center; font-weight: 700;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Keluar dari Akun
+            </a>
+        </div>
     </div>
 
     <!-- Content Area -->

@@ -249,7 +249,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <span class="mq-status"><?= htmlspecialchars($user['nim'] ?? ($user['jurusan'] ?? 'Akun Mahasiswa Aktif')) ?></span>
             </div>
         </div>
-        <a href="<?= BASE_URL ?>/auth/logout" class="mq-logout-btn" onclick="return confirm('Apakah Anda yakin ingin keluar dari akun TugasKu?')" title="Keluar dari Akun">
+        <a href="<?= BASE_URL ?>/auth/logout" class="mq-logout-btn" onclick="openLogoutModal(event)" title="Keluar dari Akun">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             <span>Keluar</span>
         </a>

@@ -35,8 +35,70 @@
     </div>
 </div>
 
+<!-- Custom Modern Logout Confirmation Modal -->
+<div id="logoutConfirmModal" class="logout-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+    <div class="logout-modal-card">
+        <div class="logout-modal-icon-wrap">
+            <div class="logout-modal-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </div>
+        </div>
+        <div class="logout-modal-content">
+            <h3 id="logoutModalTitle" class="logout-modal-title">Konfirmasi Keluar</h3>
+            <p class="logout-modal-desc">
+                Apakah Anda yakin ingin mengakhiri sesi dan keluar dari akun TugasKu?
+            </p>
+        </div>
+        <div class="logout-modal-actions">
+            <button type="button" class="btn btn-secondary logout-btn-cancel" onclick="closeLogoutModal()">
+                Tetap di Sini
+            </button>
+            <a href="<?= BASE_URL ?>/auth/logout" class="btn btn-danger logout-btn-confirm" id="confirmLogoutLink">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Ya, Keluar
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
     window.BASE_URL = '<?= BASE_URL ?>';
+
+    function openLogoutModal(event) {
+        if (event) event.preventDefault();
+        const modal = document.getElementById('logoutConfirmModal');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeLogoutModal() {
+        const modal = document.getElementById('logoutConfirmModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLogoutModal();
+    });
+
+    document.addEventListener('click', function(e) {
+        const modal = document.getElementById('logoutConfirmModal');
+        if (modal && modal.classList.contains('active') && e.target === modal) {
+            closeLogoutModal();
+        }
+    });
 </script>
 <script src="<?= BASE_URL ?>/assets/js/app.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/ai-assistant.js"></script>

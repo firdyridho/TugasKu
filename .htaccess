@@ -4,28 +4,30 @@ RewriteEngine On
     Options -MultiViews
 </IfModule>
 
-# 1. Redirect index.php to directory path (GET/HEAD only)
-RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteCond %{REQUEST_METHOD} !POST
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^?]*?)/index\.php [NC]
-RewriteRule ^(.*)index\.php$ %1/ [R=301,L]
-
-# 2. Redirect direct *.php request to clean URL (GET/HEAD only)
-RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteCond %{REQUEST_METHOD} !POST
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^?]+)\.php [NC]
-RewriteRule ^(.+)\.php$ %1 [R=301,L]
-
-# 3. If file or directory physically exists, serve it directly
+# 1. Physical files and directories - serve directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 4. If filename.php exists, rewrite internally
-RewriteCond %{REQUEST_FILENAME}\.php -f
+# 2. Well-known clean routes (works on all hostings & subdirectories)
+RewriteRule ^status/?$ status.php [L,QSA]
+RewriteRule ^changelog/?$ changelog.php [L,QSA]
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+RewriteRule ^ekspor/?$ ekspor.php [L,QSA]
+RewriteRule ^proses/?$ proses.php [L,QSA]
+
+# Auth routes
+RewriteRule ^auth/login/?$ auth/login.php [L,QSA]
+RewriteRule ^auth/logout/?$ auth/logout.php [L,QSA]
+RewriteRule ^auth/register/?$ auth/register.php [L,QSA]
+
+# Submodule detail routes
+RewriteRule ^kuliah/detail/?$ kuliah/detail.php [L,QSA]
+RewriteRule ^organisasi/detail/?$ organisasi/detail.php [L,QSA]
+
+# 3. Generic clean URL: rewrite extensionless request to .php if it exists
+RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.+?)/?$ $1.php [L,QSA]
 
-# 5. Fallback for non-existent routes
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [L,QSA]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]
