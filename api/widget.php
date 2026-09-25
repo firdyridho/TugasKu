@@ -2,13 +2,25 @@
 header('Content-Type: application/json');
 require_once __DIR__ . '/../config.php';
 
-if (!isLoggedIn()) {
-    http_response_code(401);
-    echo json_encode(['status' => 'error', 'message' => 'Silakan masuk terlebih dahulu']);
-    exit;
+$userId = 0;
+$token = trim($_GET['token'] ?? ($_POST['token'] ?? ($_SERVER['HTTP_X_WIDGET_TOKEN'] ?? '')));
+
+if (!empty($token)) {
+    $tokenUser = getUserByWidgetToken($token);
+    if ($tokenUser) {
+        $userId = (int)$tokenUser['id'];
+    }
 }
 
-$userId = (int)$_SESSION['user_id'];
+if (!$userId && isLoggedIn()) {
+    $userId = (int)$_SESSION['user_id'];
+}
+
+if (!$userId) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Akses widget tidak sah. Silakan masuk atau gunakan tautan widget pribadi kamu.']);
+    exit;
+}
 
 // Helper formatting human-friendly diff
 function formatHumanTimeDiff($seconds) {

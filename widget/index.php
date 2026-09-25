@@ -1,16 +1,44 @@
 <?php
 require_once __DIR__ . '/../config.php';
-requireLogin();
 
-$user = getUser();
-$userId = $_SESSION['user_id'];
+$token = trim($_GET['token'] ?? '');
+$user = null;
+
+if (!empty($token)) {
+    $user = getUserByWidgetToken($token);
+}
+
+if (!$user) {
+    if (isLoggedIn()) {
+        $user = getUser();
+        $token = getUserWidgetToken($_SESSION['user_id']);
+    } else {
+        requireLogin();
+    }
+}
+
+$userId = (int)$user['id'];
+$widgetToken = $token ?: getUserWidgetToken($userId);
+
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$fullWidgetUrl = $protocol . $host . BASE_URL . '/widget?token=' . urlencode($widgetToken);
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Realtime - TugasKu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TugasKu Widget Realtime</title>
+
+    <!-- PWA & Mobile Web App Meta (Untuk Pasang di Layar Utama HP / Desktop) -->
+    <link rel="manifest" href="<?= BASE_URL ?>/widget/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TugasKu Widget">
+    <meta name="theme-color" content="#0b0f19">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
@@ -18,7 +46,7 @@ $userId = $_SESSION['user_id'];
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -35,7 +63,6 @@ $userId = $_SESSION['user_id'];
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --badge-bg: rgba(255, 255, 255, 0.06);
         }
 
         * {
@@ -53,9 +80,9 @@ $userId = $_SESSION['user_id'];
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            user-select: none;
         }
 
-        /* Ambient Glow Backdrop */
         .ambient-glow {
             position: fixed;
             top: -100px;
@@ -71,13 +98,13 @@ $userId = $_SESSION['user_id'];
         .widget-container {
             position: relative;
             z-index: 1;
-            max-width: 580px;
+            max-width: 540px;
             width: 100%;
             margin: 0 auto;
-            padding: 1.25rem 1rem 3rem;
+            padding: 1rem 1rem 3rem;
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1.15rem;
         }
 
         /* Header Bar */
@@ -98,8 +125,8 @@ $userId = $_SESSION['user_id'];
         }
 
         .brand-icon-box {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 9px;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             display: flex;
@@ -123,6 +150,27 @@ $userId = $_SESSION['user_id'];
             display: flex;
             align-items: center;
             gap: 0.4rem;
+        }
+
+        .btn-install-trigger {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            color: #a5b4fc;
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-install-trigger:hover {
+            background: #4f46e5;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
 
         .btn-icon {
@@ -228,7 +276,6 @@ $userId = $_SESSION['user_id'];
             font-weight: 600;
         }
 
-        /* Quick Stat Badges inside Clock Card */
         .clock-quick-stats {
             display: flex;
             gap: 0.75rem;
@@ -275,7 +322,7 @@ $userId = $_SESSION['user_id'];
             color: var(--text-muted);
             padding: 0.65rem 0.85rem;
             border-radius: 9px;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -330,7 +377,6 @@ $userId = $_SESSION['user_id'];
             transform: translateY(-1px);
         }
 
-        /* Left status accent strip */
         .item-card::before {
             content: '';
             position: absolute;
@@ -370,45 +416,14 @@ $userId = $_SESSION['user_id'];
             gap: 0.35rem;
         }
 
-        .badge-ongoing {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
+        .badge-ongoing { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-upcoming { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
+        .badge-passed { background: rgba(255, 255, 255, 0.05); color: #94a3b8; }
 
-        .badge-upcoming {
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-
-        .badge-passed {
-            background: rgba(255, 255, 255, 0.05);
-            color: #94a3b8;
-        }
-
-        .badge-dl-overdue {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .badge-dl-today {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .badge-dl-urgent {
-            background: rgba(59, 130, 246, 0.15);
-            color: #93c5fd;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-
-        .badge-dl-normal {
-            background: rgba(255, 255, 255, 0.06);
-            color: #cbd5e1;
-        }
+        .badge-dl-overdue { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-dl-today { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-dl-urgent { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .badge-dl-normal { background: rgba(255, 255, 255, 0.06); color: #cbd5e1; }
 
         .item-time-text {
             font-size: 0.78rem;
@@ -433,12 +448,6 @@ $userId = $_SESSION['user_id'];
             flex-wrap: wrap;
         }
 
-        .item-sub svg {
-            color: #64748b;
-            flex-shrink: 0;
-        }
-
-        /* Progress Bar for Ongoing Courses */
         .ongoing-progress-wrap {
             margin-top: 0.25rem;
             width: 100%;
@@ -455,15 +464,11 @@ $userId = $_SESSION['user_id'];
             transition: width 0.4s ease;
         }
 
-        /* Task Checkbox & Actions */
+        /* Task Checkbox */
         .task-row {
             display: flex;
             align-items: flex-start;
             gap: 0.75rem;
-        }
-
-        .task-checkbox-wrap {
-            padding-top: 2px;
         }
 
         .custom-task-checkbox {
@@ -561,7 +566,7 @@ $userId = $_SESSION['user_id'];
             line-height: 1.5;
         }
 
-        /* Bottom Footer Sync Bar */
+        /* Footer Sync Bar */
         .widget-footer {
             margin-top: auto;
             padding-top: 1rem;
@@ -596,29 +601,138 @@ $userId = $_SESSION['user_id'];
             text-decoration: underline;
         }
 
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
-            background-size: 200% 100%;
-            animation: skeletonLoading 1.5s infinite;
-            border-radius: 8px;
+        /* Modal Overlay for External / Desktop / Mobile installation */
+        .ext-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
         }
 
-        @keyframes skeletonLoading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        .ext-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .ext-modal-card {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            max-width: 520px;
+            width: 100%;
+            padding: 1.6rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+            transform: scale(0.95);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ext-modal-overlay.active .ext-modal-card {
+            transform: scale(1);
+        }
+
+        .ext-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ext-modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ext-modal-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .ext-option-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .ext-option-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .ext-option-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.45;
+        }
+
+        .btn-action-ext {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.55rem 1rem;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-ext:hover {
+            background: #4f46e5;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+        }
+
+        .copy-input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        .copy-input {
+            flex: 1;
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-family: 'JetBrains Mono', monospace;
+            outline: none;
         }
 
         @media (max-width: 480px) {
             .digital-clock {
                 font-size: 1.95rem;
-            }
-            .clock-quick-stats {
-                gap: 0.4rem;
-            }
-            .quick-stat-pill {
-                font-size: 0.74rem;
-                padding: 0.35rem 0.55rem;
             }
         }
     </style>
@@ -635,16 +749,17 @@ $userId = $_SESSION['user_id'];
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 </div>
                 <div class="brand-title">
-                    Tugas<span>Ku</span> <span style="font-size:0.75rem; font-weight:500; color:#818cf8; background:rgba(99,102,241,0.15); padding:2px 7px; border-radius:12px; margin-left:3px;">Live Widget</span>
+                    Tugas<span>Ku</span> <span style="font-size:0.75rem; font-weight:500; color:#818cf8; background:rgba(99,102,241,0.15); padding:2px 7px; border-radius:12px; margin-left:3px;">Widget Bebas Login</span>
                 </div>
             </a>
             <div class="header-actions">
+                <button type="button" class="btn-install-trigger" onclick="openInstallModal()" title="Pasang di Luar Web (Desktop & HP)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <span>Pasang di HP / PC</span>
+                </button>
                 <button type="button" class="btn-icon" id="btnRefresh" onclick="fetchWidgetData(true)" title="Perbarui Data Sekarang">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
                 </button>
-                <a href="<?= BASE_URL ?>/dashboard/" class="btn-icon" title="Kembali ke Dashboard Web">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </a>
             </div>
         </header>
 
@@ -699,8 +814,8 @@ $userId = $_SESSION['user_id'];
         <!-- TAB 1: Jadwal Hari Ini List -->
         <section id="paneJadwal" class="widget-list">
             <div id="jadwalLoading" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <div class="skeleton" style="height: 72px;"></div>
-                <div class="skeleton" style="height: 72px;"></div>
+                <div class="item-card" style="opacity: 0.5;"><div style="height: 48px;"></div></div>
+                <div class="item-card" style="opacity: 0.3;"><div style="height: 48px;"></div></div>
             </div>
             <div id="jadwalContent" style="display: none;" class="widget-list"></div>
         </section>
@@ -708,8 +823,8 @@ $userId = $_SESSION['user_id'];
         <!-- TAB 2: Deadline Tugas List -->
         <section id="paneDeadlines" class="widget-list" style="display: none;">
             <div id="deadlinesLoading" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <div class="skeleton" style="height: 76px;"></div>
-                <div class="skeleton" style="height: 76px;"></div>
+                <div class="item-card" style="opacity: 0.5;"><div style="height: 52px;"></div></div>
+                <div class="item-card" style="opacity: 0.3;"><div style="height: 52px;"></div></div>
             </div>
             <div id="deadlinesContent" style="display: none;" class="widget-list"></div>
         </section>
@@ -721,20 +836,108 @@ $userId = $_SESSION['user_id'];
                 <span>Auto-refresh setiap 30 detik</span>
             </div>
             <div class="footer-links">
-                <a href="<?= BASE_URL ?>/jadwal/">+ Jadwal</a>
-                <a href="<?= BASE_URL ?>/kuliah/">+ Tugas</a>
-                <a href="<?= BASE_URL ?>/dashboard/">Dashboard</a>
+                <a href="javascript:void(0)" onclick="openInstallModal()">+ Pasang di HP/PC</a>
+                <a href="<?= BASE_URL ?>/dashboard/">Buka Web Lengkap</a>
             </div>
         </footer>
     </div>
 
+    <!-- Modal Panduan Pemasangan di Luar Web (Desktop & HP) -->
+    <div class="ext-modal-overlay" id="installModalOverlay" onclick="if(event.target===this) closeInstallModal()">
+        <div class="ext-modal-card">
+            <div class="ext-modal-header">
+                <div class="ext-modal-title">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Pasang Widget di Luar Web
+                </div>
+                <button type="button" class="ext-modal-close" onclick="closeInstallModal()">&times;</button>
+            </div>
+
+            <!-- Opsi 1: Desktop Windows -->
+            <div class="ext-option-card">
+                <div class="ext-option-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    1. Pasang di Komputer / Laptop (Windows)
+                </div>
+                <p class="ext-option-desc">
+                    Unduh file shortcut sekali klik. Cukup letakkan di Desktop atau Taskbar, klik 2x maka widget akan langsung terbuka sebagai aplikasi mengambang tanpa frame/tab browser!
+                </p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <a href="<?= BASE_URL ?>/widget/download-shortcut?token=<?= urlencode($widgetToken) ?>" class="btn-action-ext">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Unduh Shortcut Windows (.bat)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Opsi 2: Smartphone HP -->
+            <div class="ext-option-card">
+                <div class="ext-option-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    2. Pasang di Layar Utama HP (Android & iOS)
+                </div>
+                <p class="ext-option-desc">
+                    Buka tautan ini di HP kamu, lalu:
+                    <br>&bull; <strong>Android (Chrome)</strong>: Klik titik tiga (⋮) kanan atas &gt; pilih <strong>"Tambahkan ke Layar Utama"</strong>.
+                    <br>&bull; <strong>iPhone (Safari)</strong>: Klik ikon Bagikan (kotak panah atas) &gt; pilih <strong>"Tambahkan ke Layar Utama"</strong>.
+                    <br>Widget akan tersimpan seperti aplikasi mandiri di HP tanpa perlu buka web dulu!
+                </p>
+            </div>
+
+            <!-- Opsi 3: Tautan Bebas Login -->
+            <div class="ext-option-card">
+                <div class="ext-option-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    3. Tautan Widget Pribadi Kamu (Bebas Login)
+                </div>
+                <div class="copy-input-row">
+                    <input type="text" class="copy-input" id="inputWidgetLink" value="<?= htmlspecialchars($fullWidgetUrl) ?>" readonly>
+                    <button type="button" class="btn-action-ext" onclick="copyWidgetLink()" id="btnCopyLink">
+                        Salin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const BASE_URL = '<?= BASE_URL ?>';
+        const WIDGET_TOKEN = '<?= htmlspecialchars($widgetToken, ENT_QUOTES, 'UTF-8') ?>';
         let widgetData = null;
         let activeTab = 'jadwal';
-        let serverTimeOffset = 0; // ms offset between local & server
+        let serverTimeOffset = 0;
 
-        // 1. Live Realtime Digital Clock Ticker (Ticking Every 1000ms)
+        function openInstallModal() {
+            const m = document.getElementById('installModalOverlay');
+            if (m) m.classList.add('active');
+        }
+
+        function closeInstallModal() {
+            const m = document.getElementById('installModalOverlay');
+            if (m) m.classList.remove('active');
+        }
+
+        function copyWidgetLink() {
+            const inp = document.getElementById('inputWidgetLink');
+            const btn = document.getElementById('btnCopyLink');
+            if (inp) {
+                inp.select();
+                navigator.clipboard.writeText(inp.value).then(() => {
+                    if (btn) {
+                        btn.textContent = 'Tersalin!';
+                        setTimeout(() => btn.textContent = 'Salin', 2000);
+                    }
+                }).catch(() => {
+                    document.execCommand('copy');
+                    if (btn) {
+                        btn.textContent = 'Tersalin!';
+                        setTimeout(() => btn.textContent = 'Salin', 2000);
+                    }
+                });
+            }
+        }
+
+        // 1. Live Realtime Digital Clock
         function updateDigitalClock() {
             const now = new Date(Date.now() + serverTimeOffset);
             const h = String(now.getHours()).padStart(2, '0');
@@ -773,13 +976,14 @@ $userId = $_SESSION['user_id'];
             }
         }
 
-        // 3. Fetch Widget Data via API
+        // 3. Fetch Data from API using Token
         async function fetchWidgetData(isManual = false) {
             const refreshBtn = document.getElementById('btnRefresh');
             if (refreshBtn && isManual) refreshBtn.classList.add('spinning');
 
             try {
-                const res = await fetch(BASE_URL + '/api/widget.php', {
+                const url = BASE_URL + '/api/widget.php' + (WIDGET_TOKEN ? ('?token=' + encodeURIComponent(WIDGET_TOKEN)) : '');
+                const res = await fetch(url, {
                     headers: { 'Accept': 'application/json' },
                     cache: 'no-store'
                 });
@@ -808,7 +1012,6 @@ $userId = $_SESSION['user_id'];
 
         // 4. Render Widget UI
         function renderWidgetUI(data) {
-            // Update Date & Counts
             const elDate = document.getElementById('clockDate');
             if (elDate) elDate.textContent = data.date_display || 'Hari Ini';
 
@@ -831,10 +1034,7 @@ $userId = $_SESSION['user_id'];
                 if (statOngoingPill) statOngoingPill.style.display = 'none';
             }
 
-            // Render Jadwal
             renderJadwalList(data.jadwal || []);
-
-            // Render Deadlines
             renderDeadlinesList(data.deadlines || []);
         }
 
@@ -854,7 +1054,6 @@ $userId = $_SESSION['user_id'];
                         </div>
                         <div class="empty-title">Tidak Ada Jadwal Hari Ini</div>
                         <p class="empty-desc">Hari ini bebas jadwal kuliah maupun agenda mandiri. Kamu bisa istirahat atau mencicil tugas!</p>
-                        <a href="${BASE_URL}/jadwal/" class="task-action-btn">+ Tambah Jadwal Mandiri</a>
                     </div>
                 `;
                 return;
@@ -911,7 +1110,6 @@ $userId = $_SESSION['user_id'];
                         </div>
                         <div class="empty-title">Semua Tugas Beres! 🎉</div>
                         <p class="empty-desc">Tidak ada deadline tugas yang tertunda saat ini. Kamu hebat, pertahankan prestasimu!</p>
-                        <a href="${BASE_URL}/kuliah/" class="task-action-btn">Lihat Semua Tugas</a>
                     </div>
                 `;
                 return;
@@ -955,7 +1153,7 @@ $userId = $_SESSION['user_id'];
             container.innerHTML = html;
         }
 
-        // 7. Toggle Task Done with AJAX
+        // 7. Toggle Task Done via AJAX with Token
         async function toggleTaskDone(taskType, taskId, checkboxEl) {
             const card = document.getElementById(`task-card-${taskType}-${taskId}`);
             if (card) {
@@ -969,6 +1167,7 @@ $userId = $_SESSION['user_id'];
                 fd.append('task_type', taskType);
                 fd.append('task_id', taskId);
                 fd.append('status', 'selesai');
+                if (WIDGET_TOKEN) fd.append('token', WIDGET_TOKEN);
 
                 const res = await fetch(BASE_URL + '/api/widget.php', {
                     method: 'POST',
@@ -976,7 +1175,6 @@ $userId = $_SESSION['user_id'];
                 });
                 const resp = await res.json();
                 if (resp.status === 'success') {
-                    // Animate out card smoothly
                     if (card) {
                         card.style.transition = 'all 0.35s ease';
                         card.style.transform = 'translateX(100px)';
@@ -1013,7 +1211,6 @@ $userId = $_SESSION['user_id'];
                 .replace(/'/g, '&#039;');
         }
 
-        // Initial Load & Auto-Polling every 30 seconds
         fetchWidgetData();
         setInterval(() => fetchWidgetData(false), 30000);
     </script>

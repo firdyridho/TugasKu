@@ -35,6 +35,10 @@ require_once __DIR__ . '/../includes/header.php';
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     Ubah Password
                 </button>
+                <button type="button" class="setting-menu-item" id="menuWidget" onclick="switchTab('Widget')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Widget Desktop & HP
+                </button>
             </div>
         </div>
 
@@ -190,6 +194,90 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
+        <?php
+        $widgetToken = getUserWidgetToken($userId);
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $fullWidgetUrl = $protocol . $host . BASE_URL . '/widget?token=' . urlencode($widgetToken);
+        ?>
+        <!-- === TAB: WIDGET EKSTERNAL (DESKTOP & HP) === -->
+        <div class="setting-section" id="sectionWidget">
+            <div class="setting-card">
+                <div class="setting-card-header">
+                    <div class="setting-card-icon" style="background: rgba(99,102,241,0.12); color: var(--accent);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <div>
+                        <h3>Widget Eksternal (Desktop PC & Layar HP)</h3>
+                        <p>Pantau jadwal hari ini dan deadline tugas langsung di luar web aplikasi tanpa perlu login.</p>
+                    </div>
+                </div>
+                <div class="setting-card-body">
+                    <!-- 1. Tautan Pribadi -->
+                    <div class="form-group">
+                        <label>Tautan Widget Pribadi Kamu (Bebas Login)</label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="text" class="form-control" id="widgetLinkSetting" value="<?= htmlspecialchars($fullWidgetUrl) ?>" readonly style="font-family: monospace; font-size: 0.82rem; background: var(--bg-hover);">
+                            <button type="button" class="btn btn-secondary" onclick="copyWidgetUrlSetting()" id="btnCopySetting" style="white-space: nowrap;">
+                                Salin Link
+                            </button>
+                        </div>
+                        <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem; display: block;">
+                            Tautan ini memiliki token pribadi. Siapapun yang membuka tautan ini dapat melihat jadwal dan tugas kamu tanpa perlu login.
+                        </span>
+                    </div>
+
+                    <!-- 2. Tombol Aksi Langsung -->
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                        <a href="<?= htmlspecialchars($fullWidgetUrl) ?>" target="_blank" class="btn btn-primary btn-sm">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            Buka Widget Sekarang
+                        </a>
+                        <a href="<?= BASE_URL ?>/widget/download-shortcut?token=<?= urlencode($widgetToken) ?>" class="btn btn-secondary btn-sm">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Unduh Launcher Windows (.bat)
+                        </a>
+                        <form method="POST" action="<?= BASE_URL ?>/proses" style="display: inline;" onsubmit="return confirm('Reset token widget? Tautan widget yang lama tidak akan bisa diakses lagi.')">
+                            <input type="hidden" name="action" value="reset_widget_token">
+                            <button type="submit" class="btn btn-danger-ghost btn-sm">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                                Reset Token Baru
+                            </button>
+                        </form>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                        <!-- Panduan Desktop -->
+                        <div style="background: var(--bg-hover); border: 1px solid var(--border); border-radius: 12px; padding: 1rem;">
+                            <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                Pasang di Desktop Windows
+                            </div>
+                            <ol style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.15rem; margin: 0;">
+                                <li>Klik tombol <strong>"Unduh Launcher Windows (.bat)"</strong> di atas.</li>
+                                <li>Pindahkan file ke Desktop atau sematkan di Taskbar.</li>
+                                <li>Klik 2x pada file tersebut, widget akan langsung terbuka mengambang tanpa browser bar!</li>
+                            </ol>
+                        </div>
+
+                        <!-- Panduan HP -->
+                        <div style="background: var(--bg-hover); border: 1px solid var(--border); border-radius: 12px; padding: 1rem;">
+                            <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                                Pasang di Layar Utama HP
+                            </div>
+                            <ol style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.15rem; margin: 0;">
+                                <li>Buka tautan widget di browser HP (Chrome Android / Safari iPhone).</li>
+                                <li><strong>Android</strong>: Tekan menu titik tiga (⋮) &gt; pilih <strong>"Tambahkan ke Layar Utama"</strong>.</li>
+                                <li><strong>iPhone</strong>: Tekan tombol Bagikan (Share) &gt; pilih <strong>"Tambahkan ke Layar Utama"</strong>.</li>
+                                <li>Ikon widget akan terpasang di HP dan bisa dibuka kapan saja tanpa login!</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -197,9 +285,42 @@ require_once __DIR__ . '/../includes/header.php';
 function switchTab(tab) {
     document.querySelectorAll('.setting-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.setting-menu-item').forEach(m => m.classList.remove('active'));
-    document.getElementById('section' + tab).classList.add('active');
-    document.getElementById('menu' + tab).classList.add('active');
+    const sec = document.getElementById('section' + tab);
+    const mnu = document.getElementById('menu' + tab);
+    if (sec) sec.classList.add('active');
+    if (mnu) mnu.classList.add('active');
 }
+
+function copyWidgetUrlSetting() {
+    const inp = document.getElementById('widgetLinkSetting');
+    const btn = document.getElementById('btnCopySetting');
+    if (inp) {
+        inp.select();
+        navigator.clipboard.writeText(inp.value).then(() => {
+            if (btn) {
+                btn.textContent = 'Tersalin!';
+                setTimeout(() => btn.textContent = 'Salin Link', 2000);
+            }
+        }).catch(() => {
+            document.execCommand('copy');
+            if (btn) {
+                btn.textContent = 'Tersalin!';
+                setTimeout(() => btn.textContent = 'Salin Link', 2000);
+            }
+        });
+    }
+}
+
+// Auto open tab from query string
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab === 'widget') {
+        switchTab('Widget');
+    } else if (tab === 'password') {
+        switchTab('Password');
+    }
+});
 
 function togglePw(id, btn) {
     const inp = document.getElementById(id);
