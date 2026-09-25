@@ -307,43 +307,82 @@ function escapeHtml(text) {
 const spotlightTourSteps = [
     {
         selector: '.welcome-banner',
-        tag: 'Langkah 1 dari 5',
-        title: 'Pusat Komando Produktivitas',
-        desc: 'Selamat datang di TugasKu! Di sini Anda dapat memantau tugas kuliah, agenda organisasi, jadwal harian, dan tenggat waktu terdekat secara terpusat dan rapi.',
-        tip: 'Gunakan tombol aksi cepat di sebelah kanan banner untuk langsung menambahkan proker organisasi, mata kuliah, atau jadwal mandiri baru.',
-        icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>`
+        mobileSelector: '.welcome-banner',
+        tag: 'Langkah 1 dari 6',
+        title: 'Pusat Komando & Aksi Cepat',
+        desc: 'Selamat datang di TugasKu! Banner ini adalah pusat kendali perkuliahan dan organisasi Anda. Sapaan dinamis menyesuaikan waktu, dilengkapi ringkasan status harian serta tombol aksi instan untuk mencatat agenda baru tanpa ribet berpindah halaman.',
+        features: [
+            'Tombol Aksi Cepat: Tambah Proker Organisasi, Mata Kuliah, dan Jadwal Mandiri',
+            'Sapaan Waktu Otomatis & Identitas Mahasiswa Terintegrasi'
+        ],
+        tip: 'Klik salah satu tombol aksi cepat di banner kapan pun dosen mengumumkan tugas baru atau ketua divisi menetapkan proker!',
+        icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>`
     },
     {
         selector: '.stats-grid',
-        tag: 'Langkah 2 dari 5',
-        title: 'Statistik & Indikator Progres',
-        desc: 'Kartu ringkasan ini memantau total mata kuliah aktif, organisasi yang Anda ikuti, tugas yang menunggu penyelesaian, serta persentase penyelesaian tugas mingguan Anda secara akurat.',
-        tip: 'Tingkat persentase tuntas akan otomatis bertambah setiap kali Anda menyelesaikan tugas perkuliahan atau divisi.',
-        icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+        mobileSelector: '.stats-grid',
+        tag: 'Langkah 2 dari 6',
+        title: 'Metrik Real-Time & Progres Tuntas',
+        desc: 'Empat kartu ringkasan ini memantau performa akademik dan keaktifan organisasi Anda secara akurat. Memuat jumlah organisasi aktif, tugas yang belum diselesaikan, total mata kuliah semester ini, serta persentase produktivitas mingguan Anda.',
+        features: [
+            'Indikator Persentase Tuntas: Otomatis naik saat tugas diselesaikan',
+            'Sinkronisasi Otomatis: Terhubung langsung dengan database tugas divisi & kuliah'
+        ],
+        tip: 'Jaga persentase tuntas di atas 80% setiap pekan agar tidak terjadi penumpukan tugas menjelang pekan UTS/UAS.',
+        icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
     },
     {
         selector: '.dashboard-grid',
-        tag: 'Langkah 3 dari 5',
-        title: 'Jadwal Hari Ini & Deadline Terdekat',
-        desc: 'Sistem secara otomatis mendeteksi hari ini dan menampilkan daftar kelas yang harus dihadiri, serta mengurutkan deadline tugas berdasarkan tingkat kedaruratan.',
-        tip: 'Label urgensi berwarna merah menandakan tugas yang mendekati tenggat waktu atau harus dikumpulkan hari ini.',
-        icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
+        mobileSelector: '.dashboard-grid',
+        tag: 'Langkah 3 dari 6',
+        title: 'Jadwal Hari Ini & Deteksi Deadline Darurat',
+        desc: 'Sistem TugasKu otomatis mendeteksi hari ini (Senin - Minggu) dan menampilkan mata kuliah yang harus dihadiri beserta ruangan dan jam mulainya. Kolom sebelah kanan mengurutkan deadline terdekat berdasarkan tingkat kedaruratan waktu.',
+        features: [
+            'Badge Urgensi Cerdas: Merah (Mendesak / <24 jam), Kuning (Mendekati), Hijau (Aman)',
+            'Centang Selesai Instan: Selesaikan tugas langsung dari kartu dashboard utama'
+        ],
+        tip: 'Tugas berlabel merah wajib didahulukan hari ini agar Anda tidak terlambat mengumpulkan ke dosen pengampu.',
+        icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
     },
     {
         selector: '#sidebar .sidebar-nav',
-        tag: 'Langkah 4 dari 5',
-        title: 'Pemisahan Organisasi & Kampus',
-        desc: 'Menu samping memisahkan ruang khusus Organisasi (BEM, Himpunan, UKM), Kuliah, Jadwal Mandiri, Kalender, dan Ekspor Data Google Sheets agar tidak tercampur aduk.',
-        tip: 'Gunakan fitur Ekspor Data untuk mengunduh laporan tugas rapi dalam format CSV yang kompatibel langsung dengan Google Sheets dan Excel.',
-        icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+        mobileSelector: '#mobileBottomNav',
+        tag: 'Langkah 4 dari 6',
+        title: 'Pemisahan Ruang: Kuliah vs Organisasi',
+        desc: 'TugasKu memisahkan secara tegas ruang kerja Organisasi Mahasiswa (BEM, HIMA, UKM) dari Ruang Akademik Kuliah. Masing-masing memiliki manajemen divisi, anggota, berkas rapat, silabus, dan daftar tugas tersendiri tanpa bercampur aduk.',
+        features: [
+            'Ruang Organisasi: Kelola divisi, proker, dan anggaran kas kepengurusan',
+            'Ruang Kuliah: Arsip modul materi, jadwal kelas, dan tugas per mata kuliah'
+        ],
+        tip: 'Gunakan navigasi ini untuk berpindah ruang secara instan baik di laptop maupun melalui bilah menu bawah di HP.',
+        icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+    },
+    {
+        selector: '.content-wrapper',
+        mobileSelector: '.content-wrapper',
+        tag: 'Langkah 5 dari 6',
+        title: 'Kalender Terpadu & Ekspor Data Sheets',
+        desc: 'Semua deadline tugas, kelas kuliah, dan proker dipetakan ke dalam satu Kalender Akademik interaktif. Anda juga dapat mengekspor rekapitulasi data lengkap ke format CSV yang kompatibel 100% dengan Google Sheets dan Microsoft Excel.',
+        features: [
+            'Kalender Terpadu: Klik tanggal mana saja untuk melihat detail seluruh agenda hari itu',
+            'Ekspor CSV / Sheets: Cocok untuk backup data atau bahan LPJ divisi organisasi'
+        ],
+        tip: 'Menu Ekspor Data di sidebar/pengaturan dapat diakses kapan saja untuk mengunduh rekap tugas semester.',
+        icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`
     },
     {
         selector: '#aiFloatingBtn',
-        tag: 'Langkah 5 dari 5',
+        mobileSelector: '#aiFloatingBtn',
+        tag: 'Langkah 6 dari 6',
         title: 'Asisten AI TugasKu (NVIDIA NIM)',
-        desc: 'Butuh bantuan menyusun prioritas tugas, strategi belajar UAS, draf email sopan izin tidak masuk ke dosen, atau pembagian proker? Klik tombol TugasKu AI di kanan bawah kapan saja!',
-        tip: 'Didukung oleh model AI NVIDIA yang cerdas, cepat, dan siap mendampingi studi Anda 24/7.',
-        icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`
+        desc: 'Butuh bantuan menyusun prioritas tugas, membuat draf email sopan ke dosen, strategi belajar UAS, atau pembagian proker divisi? Asisten AI siap membantu Anda 24/7 dengan respon cerdas, cepat, dan berbobot akademis.',
+        features: [
+            'Didukung model AI resmi NVIDIA NIM dengan pemrosesan kilat',
+            'Format jawaban rapi terstruktur dengan tombol Salin Cepat',
+            'Dilengkapi indikator berpikir neural wave yang futuristik'
+        ],
+        tip: 'Klik tombol TugasKu AI di kanan bawah kapan pun Anda butuh inspirasi atau bantuan akademis!',
+        icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`
     }
 ];
 
@@ -361,6 +400,16 @@ function initOnboardingTour() {
             startSpotlightTour(false);
         }, 800);
     }
+}
+
+function getTourTargetElement(step) {
+    if (!step) return null;
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile && step.mobileSelector) {
+        const el = document.querySelector(step.mobileSelector);
+        if (el && el.offsetParent !== null) return el;
+    }
+    return document.querySelector(step.selector);
 }
 
 function startSpotlightTour(force = false) {
@@ -395,7 +444,7 @@ function handleTourReposition() {
     if (!isTourActive) return;
     const step = spotlightTourSteps[currentSpotlightIndex];
     if (step) {
-        const targetEl = document.querySelector(step.selector);
+        const targetEl = getTourTargetElement(step);
         positionSpotlight(targetEl);
     }
 }
@@ -417,7 +466,20 @@ function renderSpotlightStep(index) {
 
     if (tagEl) tagEl.textContent = step.tag;
     if (titleEl) titleEl.textContent = step.title;
-    if (descEl) descEl.textContent = step.desc;
+    
+    // Rich content: description + feature bullets
+    if (descEl) {
+        let contentHtml = `<div class="spotlight-desc-text">${escapeHtml(step.desc)}</div>`;
+        if (step.features && step.features.length > 0) {
+            contentHtml += `<ul class="spotlight-features-list">`;
+            step.features.forEach(feat => {
+                contentHtml += `<li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span>${escapeHtml(feat)}</span></li>`;
+            });
+            contentHtml += `</ul>`;
+        }
+        descEl.innerHTML = contentHtml;
+    }
+
     if (tipTextEl) tipTextEl.textContent = step.tip;
     if (iconEl) iconEl.innerHTML = step.icon;
 
@@ -447,31 +509,84 @@ function renderSpotlightStep(index) {
     }
 
     // Find and box target DOM element
-    const targetEl = document.querySelector(step.selector);
+    const targetEl = getTourTargetElement(step);
     positionSpotlight(targetEl);
 }
 
+/**
+ * Smart Collision-Free Spotlight Positioning
+ * Guarantees popover NEVER covers the spotlighted element
+ */
 function positionSpotlight(targetEl) {
     const box = document.getElementById('spotlightBox');
     const popover = document.getElementById('spotlightPopover');
     if (!box || !popover) return;
 
-    if (!targetEl) {
+    const isMobile = window.innerWidth <= 768;
+
+    if (!targetEl || targetEl.offsetParent === null) {
         // Fallback center of screen
         box.style.display = 'none';
+        popover.className = 'spotlight-popover pos-center';
         popover.style.top = '50%';
         popover.style.left = '50%';
+        popover.style.bottom = 'auto';
+        popover.style.right = 'auto';
         popover.style.transform = 'translate(-50%, -50%)';
         return;
     }
 
-    // Scroll element into view smoothly
-    targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const pad = isMobile ? 6 : 10;
+    const viewW = window.innerWidth;
+    const viewH = window.innerHeight;
+
+    // Mobile Viewport Logic: Dock at bottom as bottom-card, scroll target to upper screen area
+    if (isMobile) {
+        // Smooth scroll target so it sits in upper half with clear breathing space
+        const currentRect = targetEl.getBoundingClientRect();
+        const idealTop = 75; // safe margin below topbar
+        const scrollDelta = currentRect.top - idealTop;
+        window.scrollBy({ top: scrollDelta, behavior: 'smooth' });
+
+        setTimeout(() => {
+            const rect = targetEl.getBoundingClientRect();
+            box.style.display = 'block';
+            box.style.top = Math.max(0, rect.top - pad) + 'px';
+            box.style.left = Math.max(4, rect.left - pad) + 'px';
+            box.style.width = Math.min(viewW - 8, rect.width + pad * 2) + 'px';
+            box.style.height = (rect.height + pad * 2) + 'px';
+
+            const compStyle = window.getComputedStyle(targetEl);
+            box.style.borderRadius = compStyle.borderRadius || '12px';
+
+            // Dock popover at bottom sheet with safe margin above bottom nav
+            popover.className = 'spotlight-popover pos-mobile-bottom';
+            popover.style.top = 'auto';
+            popover.style.bottom = '76px';
+            popover.style.left = '12px';
+            popover.style.right = '12px';
+            popover.style.width = 'auto';
+            popover.style.maxWidth = '460px';
+            popover.style.margin = '0 auto';
+            popover.style.transform = 'none';
+        }, 220);
+        return;
+    }
+
+    // Desktop Viewport Logic: Calculate smart vertical and horizontal clearance
+    // Pre-calculate whether placement below or above is better
+    const targetCenterY = targetEl.offsetTop + targetEl.offsetHeight / 2;
+    const estimatedPopH = 310;
+    const popW = Math.min(410, viewW - 32);
+
+    // Scroll so element has sufficient room
+    const elemRect = targetEl.getBoundingClientRect();
+    if (elemRect.top < 90 || elemRect.bottom > viewH - 120) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     setTimeout(() => {
         const rect = targetEl.getBoundingClientRect();
-        const pad = 8;
-
         box.style.display = 'block';
         box.style.top = Math.max(0, rect.top - pad) + 'px';
         box.style.left = Math.max(0, rect.left - pad) + 'px';
@@ -479,30 +594,60 @@ function positionSpotlight(targetEl) {
         box.style.height = (rect.height + pad * 2) + 'px';
 
         const compStyle = window.getComputedStyle(targetEl);
-        box.style.borderRadius = compStyle.borderRadius || '12px';
+        box.style.borderRadius = compStyle.borderRadius || '14px';
 
-        // Position popover
-        const popW = Math.min(360, window.innerWidth - 28);
-        const popH = 260;
-        const viewW = window.innerWidth;
-        const viewH = window.innerHeight;
+        const actualPopH = popover.offsetHeight || estimatedPopH;
+        const spaceBelow = viewH - rect.bottom;
+        const spaceAbove = rect.top;
+        const spaceRight = viewW - rect.right;
+        const spaceLeft = rect.left;
 
-        let top = rect.bottom + 14;
-        let left = rect.left + (rect.width / 2) - (popW / 2);
+        let finalTop = 0;
+        let finalLeft = 0;
+        let placementClass = 'pos-below';
 
-        // If bottom overflows screen, show above target
-        if (top + popH > viewH) {
-            top = Math.max(16, rect.top - popH - 14);
+        // 1. Check if it fits comfortably BELOW target
+        if (spaceBelow >= actualPopH + 18) {
+            finalTop = rect.bottom + 14;
+            finalLeft = rect.left + (rect.width / 2) - (popW / 2);
+            placementClass = 'pos-below';
+        }
+        // 2. Else check if it fits comfortably ABOVE target
+        else if (spaceAbove >= actualPopH + 18) {
+            finalTop = rect.top - actualPopH - 14;
+            finalLeft = rect.left + (rect.width / 2) - (popW / 2);
+            placementClass = 'pos-above';
+        }
+        // 3. Else check side placement (e.g. for sidebar or tall cards)
+        else if (spaceRight >= popW + 24) {
+            finalTop = Math.max(16, Math.min(rect.top, viewH - actualPopH - 16));
+            finalLeft = rect.right + 16;
+            placementClass = 'pos-right';
+        }
+        else if (spaceLeft >= popW + 24) {
+            finalTop = Math.max(16, Math.min(rect.top, viewH - actualPopH - 16));
+            finalLeft = rect.left - popW - 16;
+            placementClass = 'pos-left';
+        }
+        // 4. Fallback: Place at bottom right floating dock without obscuring main content
+        else {
+            finalTop = Math.max(16, viewH - actualPopH - 24);
+            finalLeft = Math.max(16, viewW - popW - 24);
+            placementClass = 'pos-floating';
         }
 
-        // Clamp horizontal
-        if (left < 14) left = 14;
-        if (left + popW > viewW - 14) left = viewW - popW - 14;
+        // Clamp horizontal boundaries safely inside viewport
+        if (finalLeft < 16) finalLeft = 16;
+        if (finalLeft + popW > viewW - 16) finalLeft = viewW - popW - 16;
 
+        popover.className = 'spotlight-popover ' + placementClass;
+        popover.style.top = finalTop + 'px';
+        popover.style.left = finalLeft + 'px';
+        popover.style.bottom = 'auto';
+        popover.style.right = 'auto';
+        popover.style.width = popW + 'px';
         popover.style.transform = 'none';
-        popover.style.top = top + 'px';
-        popover.style.left = left + 'px';
-    }, 180);
+    }, 200);
 }
 
 function nextSpotlightStep() {
@@ -530,4 +675,5 @@ window.startSpotlightTour = startSpotlightTour;
 window.closeSpotlightTour = closeSpotlightTour;
 window.nextSpotlightStep = nextSpotlightStep;
 window.prevSpotlightStep = prevSpotlightStep;
+
 

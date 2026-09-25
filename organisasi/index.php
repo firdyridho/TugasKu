@@ -95,7 +95,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </span>
                 </div>
                 <div class="data-card-actions">
-                    <a href="<?= BASE_URL ?>/organisasi/detail.php?id=<?= $org['id'] ?>" class="btn btn-secondary btn-sm" style="width: 100%;">
+                    <a href="<?= BASE_URL ?>/organisasi/detail?id=<?= $org['id'] ?>" class="btn btn-secondary btn-sm" style="width: 100%;">
                         Buka Daftar Tugas
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
@@ -112,7 +112,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Buat Organisasi Baru</h2>
             <button class="modal-close" onclick="closeModal('addOrgModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="add_org">
                 <div class="form-group">
@@ -148,7 +148,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Edit Organisasi</h2>
             <button class="modal-close" onclick="closeModal('editOrgModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="edit_org">
                 <input type="hidden" name="id" id="edit_org_id">

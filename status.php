@@ -19,6 +19,11 @@ $dbLatency = round((microtime(true) - $dbPingStart) * 1000, 1);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Status Sistem & Uptime - TugasKu</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
+
     <meta name="description" content="Status operasional dan uptime real-time server, basis data, dan layanan platform TugasKu.">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">

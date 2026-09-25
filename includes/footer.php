@@ -7,7 +7,7 @@
     <div id="spotlightBox" class="spotlight-box"></div>
     <div id="spotlightPopover" class="spotlight-popover">
         <div class="spotlight-popover-header">
-            <span class="spotlight-step-tag" id="spotlightStepTag">Langkah 1 dari 5</span>
+            <span class="spotlight-step-tag" id="spotlightStepTag">Langkah 1 dari 6</span>
             <button type="button" class="spotlight-btn-close" onclick="closeSpotlightTour(true)" aria-label="Tutup Panduan">&times;</button>
         </div>
         <div class="spotlight-popover-body">

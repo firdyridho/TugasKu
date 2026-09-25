@@ -8,6 +8,11 @@ $loggedIn = isLoggedIn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kebijakan Privasi - TugasKu</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
+
     <meta name="description" content="Kebijakan privasi platform TugasKu. Memahami bagaimana kami menjaga kerahasiaan dan keamanan data kegiatan mahasiswa Anda.">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -349,7 +354,7 @@ $loggedIn = isLoggedIn();
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                 </a>
             <?php else: ?>
-                <a href="<?= BASE_URL ?>/auth/login.php" class="legal-btn-primary">
+                <a href="<?= BASE_URL ?>/auth/login" class="legal-btn-primary">
                     Masuk Akun
                 </a>
             <?php endif; ?>

@@ -124,7 +124,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Tambah Jadwal Mandiri</h2>
             <button class="modal-close" onclick="closeModal('addScheduleModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="add_schedule">
                 <div class="form-group">
@@ -193,7 +193,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Edit Jadwal Mandiri</h2>
             <button class="modal-close" onclick="closeModal('editScheduleModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="edit_schedule">
                 <input type="hidden" name="id" id="edit_schedule_id">

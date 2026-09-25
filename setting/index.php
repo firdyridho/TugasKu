@@ -55,7 +55,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
                 <div class="setting-card-body">
-                    <form method="POST" action="<?= BASE_URL ?>/proses.php">
+                    <form method="POST" action="<?= BASE_URL ?>/proses">
                         <input type="hidden" name="action" value="update_profile">
                         <div class="form-row">
                             <div class="form-group">
@@ -106,7 +106,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
                 <div class="setting-card-body">
-                    <form method="POST" action="<?= BASE_URL ?>/proses.php" onsubmit="return validatePwForm()">
+                    <form method="POST" action="<?= BASE_URL ?>/proses" onsubmit="return validatePwForm()">
                         <input type="hidden" name="action" value="change_password">
 
                         <div class="form-group">

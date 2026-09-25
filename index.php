@@ -8,6 +8,11 @@ $loggedIn = isLoggedIn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TugasKu - Platform Manajemen Kegiatan & Akademik Mahasiswa Modern</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
+
     <meta name="description" content="Platform produktivitas mahasiswa terpadu: kelola tugas kuliah, kegiatan organisasi, jadwal mingguan, kalender akademik, dan ekspor Google Sheets dalam satu tampilan elegan dan rapi.">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1009,6 +1014,15 @@ $loggedIn = isLoggedIn();
             .preview-tt-grid { grid-template-columns: 1fr 1fr; }
             .lp-footer-grid { grid-template-columns: 1fr; }
         }
+
+        @media (max-width: 480px) {
+            .lp-uptime-pill { display: none; }
+            .lp-stats-strip { grid-template-columns: 1fr; }
+            .lp-stat-item { border-right: none !important; border-bottom: 1px solid rgba(37,99,235,0.1); }
+            .preview-tt-grid { grid-template-columns: 1fr; }
+            .lp-hero-actions { flex-direction: column; width: 100%; }
+            .lp-hero-actions .lp-btn-cta, .lp-hero-actions .lp-btn-outline { width: 100%; text-align: center; }
+        }
     </style>
 </head>
 <body class="landing-body">
@@ -1019,7 +1033,7 @@ $loggedIn = isLoggedIn();
             <a href="<?= BASE_URL ?>/" class="brand-logo" style="text-decoration:none;">
                 Tugas<span class="logo-accent">Ku</span><span class="logo-dot">.</span>
             </a>
-            <a href="<?= BASE_URL ?>/status.php" class="lp-uptime-pill" title="Periksa Status Sistem & Uptime Realtime">
+            <a href="<?= BASE_URL ?>/status" class="lp-uptime-pill" title="Periksa Status Sistem & Uptime Realtime">
                 <span class="lp-pulse-dot"></span>
                 <span>99.98% Uptime</span>
             </a>
@@ -1032,18 +1046,18 @@ $loggedIn = isLoggedIn();
                 Update
                 <span class="lp-nav-link-badge">v2.4</span>
             </a>
-            <a href="<?= BASE_URL ?>/status.php" class="lp-nav-link">Status</a>
-            <a href="<?= BASE_URL ?>/privacy.php" class="lp-nav-link">Privasi</a>
+            <a href="<?= BASE_URL ?>/status" class="lp-nav-link">Status</a>
+            <a href="<?= BASE_URL ?>/privacy" class="lp-nav-link">Privasi</a>
 
             <div style="margin-left: 0.75rem; display:flex; align-items:center; gap:0.5rem;">
                 <?php if ($loggedIn): ?>
-                    <a href="<?= BASE_URL ?>/dashboard/" class="lp-btn-cta">
+                    <a href="<?= BASE_URL ?>/dashboard" class="lp-btn-cta">
                         Buka Dashboard
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
                 <?php else: ?>
-                    <a href="<?= BASE_URL ?>/auth/login.php" class="lp-btn-login">Masuk</a>
-                    <a href="<?= BASE_URL ?>/auth/login.php?mode=register" class="lp-btn-cta">
+                    <a href="<?= BASE_URL ?>/auth/login" class="lp-btn-login">Masuk</a>
+                    <a href="<?= BASE_URL ?>/auth/login?mode=register" class="lp-btn-cta">
                         Daftar Gratis
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
@@ -1058,7 +1072,7 @@ $loggedIn = isLoggedIn();
         <div class="lp-hero-blob lp-hero-blob-2"></div>
 
         <div class="lp-hero-content">
-            <a href="<?= BASE_URL ?>/changelog.php" class="lp-hero-pill">
+            <a href="<?= BASE_URL ?>/changelog" class="lp-hero-pill">
                 <span class="lp-pulse-dot"></span>
                 <span>Update v2.4: Ekspor Google Sheets, Timetable 7-Hari & Keamanan Akun &rarr;</span>
             </a>
@@ -1074,12 +1088,12 @@ $loggedIn = isLoggedIn();
 
             <div class="lp-hero-actions">
                 <?php if ($loggedIn): ?>
-                    <a href="<?= BASE_URL ?>/dashboard/" class="lp-btn-hero-primary">
+                    <a href="<?= BASE_URL ?>/dashboard" class="lp-btn-hero-primary">
                         Buka Dashboard TugasKu
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
                 <?php else: ?>
-                    <a href="<?= BASE_URL ?>/auth/login.php?mode=register" class="lp-btn-hero-primary">
+                    <a href="<?= BASE_URL ?>/auth/login?mode=register" class="lp-btn-hero-primary">
                         Mulai Sekarang Gratis
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
@@ -1307,7 +1321,7 @@ $loggedIn = isLoggedIn();
                     <h3>Timetable Kuliah 7-Hari Tanpa Bug</h3>
                     <p>Tampilan jadwal mingguan yang telah diperbaiki total: tersusun teratur dari Senin hingga Minggu, lengkap dengan sorotan penanda "Hari Ini", ruang kelas, dan nama dosen pengampu.</p>
                 </div>
-                <span class="lp-bento-badge">✨ Diperbarui di v2.4</span>
+                <span class="lp-bento-badge">Diperbarui di v2.4</span>
             </div>
 
             <!-- 2. Ekspor Google Sheets -->
@@ -1319,7 +1333,7 @@ $loggedIn = isLoggedIn();
                     <h3>Ekspor Google Sheets</h3>
                     <p>Unduh data ke format spreadsheet dengan 5 opsi filter dan encoding UTF-8 BOM otomatis agar langsung rapi dibuka di Excel atau Google Sheets.</p>
                 </div>
-                <span class="lp-bento-badge">⚡ Fitur Baru</span>
+                <span class="lp-bento-badge">Fitur Baru</span>
             </div>
 
             <!-- 3. Organisasi & Proker -->
@@ -1331,7 +1345,7 @@ $loggedIn = isLoggedIn();
                     <h3>Manajemen Organisasi</h3>
                     <p>Catat divisi, jabatan, proker, dan pembagian tugas kepanitiaan tanpa tercampur dengan tugas kuliah.</p>
                 </div>
-                <span class="lp-bento-badge">🏛️ Multi-Organisasi</span>
+                <span class="lp-bento-badge">Multi-Organisasi</span>
             </div>
 
             <!-- 4. Keamanan & Meteran Sandi -->
@@ -1343,7 +1357,7 @@ $loggedIn = isLoggedIn();
                     <h3>Pengaturan Akun & Password Guard</h3>
                     <p>Perbarui profil NIM, jurusan, dan ubah kata sandi dengan aman lewat verifikasi kata sandi lama, meteran kekuatan kata sandi visual, serta tombol mata pengalih visibilitas.</p>
                 </div>
-                <span class="lp-bento-badge">🛡️ Keamanan Berlapis</span>
+                <span class="lp-bento-badge">Keamanan Berlapis</span>
             </div>
         </div>
     </section>
@@ -1390,7 +1404,7 @@ $loggedIn = isLoggedIn();
                     <span>30 hari lalu</span>
                     <span>Hari ini</span>
                 </div>
-                <a href="<?= BASE_URL ?>/status.php" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.86rem;font-weight:700;color:var(--blue-600);text-decoration:none;">
+                <a href="<?= BASE_URL ?>/status" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.86rem;font-weight:700;color:var(--blue-600);text-decoration:none;">
                     Buka Halaman Status & Uptime Lengkap
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                 </a>
@@ -1408,7 +1422,7 @@ $loggedIn = isLoggedIn();
                     Komitmen kami untuk terus menghadirkan pembaruan berkualitas bagi mahasiswa.
                 </p>
             </div>
-            <a href="<?= BASE_URL ?>/changelog.php" class="lp-btn-login" style="padding:0.65rem 1.25rem;">
+            <a href="<?= BASE_URL ?>/changelog" class="lp-btn-login" style="padding:0.65rem 1.25rem;">
                 Lihat Catatan Rilis Lengkap
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
@@ -1484,7 +1498,7 @@ $loggedIn = isLoggedIn();
                     <p style="margin:0;font-size:0.88rem;color:#64748b;">Kami tidak pernah menjual data Anda ke pihak ketiga atau memasang iklan pelacak.</p>
                 </div>
             </div>
-            <a href="<?= BASE_URL ?>/privacy.php" style="font-size:0.88rem;font-weight:700;color:var(--blue-600);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;">
+            <a href="<?= BASE_URL ?>/privacy" style="font-size:0.88rem;font-weight:700;color:var(--blue-600);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;">
                 Baca Kebijakan Privasi
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
@@ -1498,14 +1512,14 @@ $loggedIn = isLoggedIn();
             <p>Bergabunglah dengan ratusan mahasiswa lainnya yang telah merapikan jadwal dan tugas kampus mereka.</p>
             <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
                 <?php if ($loggedIn): ?>
-                    <a href="<?= BASE_URL ?>/dashboard/" class="lp-btn-cta-white">
+                    <a href="<?= BASE_URL ?>/dashboard" class="lp-btn-cta-white">
                         Buka Dashboard Sekarang
                     </a>
                 <?php else: ?>
-                    <a href="<?= BASE_URL ?>/auth/login.php?mode=register" class="lp-btn-cta-white">
+                    <a href="<?= BASE_URL ?>/auth/login?mode=register" class="lp-btn-cta-white">
                         Daftar Sekarang Gratis
                     </a>
-                    <a href="<?= BASE_URL ?>/auth/login.php" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);color:#ffffff;padding:0.9rem 2rem;border-radius:12px;font-weight:700;text-decoration:none;">
+                    <a href="<?= BASE_URL ?>/auth/login" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);color:#ffffff;padding:0.9rem 2rem;border-radius:12px;font-weight:700;text-decoration:none;">
                         Sudah Punya Akun? Masuk
                     </a>
                 <?php endif; ?>
@@ -1524,7 +1538,7 @@ $loggedIn = isLoggedIn();
                     Platform produktivitas kampus terpadu untuk mendampingi mahasiswa mencapai kelulusan tepat waktu dengan hidup yang teratur dan tenang.
                 </p>
                 <div style="margin-top:1.25rem;">
-                    <a href="<?= BASE_URL ?>/status.php" class="lp-uptime-pill" style="background:#ffffff;">
+                    <a href="<?= BASE_URL ?>/status" class="lp-uptime-pill" style="background:#ffffff;">
                         <span class="lp-pulse-dot"></span>
                         <span>Sistem 100% Operasional</span>
                     </a>
@@ -1544,18 +1558,18 @@ $loggedIn = isLoggedIn();
             <div class="lp-footer-col">
                 <h4>Sistem & Rilis</h4>
                 <ul class="lp-footer-links">
-                    <li><a href="<?= BASE_URL ?>/changelog.php" class="lp-footer-link">Catatan Rilis (Update v2.4)</a></li>
-                    <li><a href="<?= BASE_URL ?>/status.php" class="lp-footer-link">Status Uptime Server</a></li>
-                    <li><a href="<?= BASE_URL ?>/status.php" class="lp-footer-link">Pengukur Latensi Live</a></li>
+                    <li><a href="<?= BASE_URL ?>/changelog" class="lp-footer-link">Catatan Rilis (Update v2.4)</a></li>
+                    <li><a href="<?= BASE_URL ?>/status" class="lp-footer-link">Status Uptime Server</a></li>
+                    <li><a href="<?= BASE_URL ?>/status" class="lp-footer-link">Pengukur Latensi Live</a></li>
                 </ul>
             </div>
 
             <div class="lp-footer-col">
                 <h4>Privasi & Legal</h4>
                 <ul class="lp-footer-links">
-                    <li><a href="<?= BASE_URL ?>/privacy.php" class="lp-footer-link">Kebijakan Privasi</a></li>
-                    <li><a href="<?= BASE_URL ?>/privacy.php#keamanan" class="lp-footer-link">Standar Keamanan Data</a></li>
-                    <li><a href="<?= BASE_URL ?>/privacy.php#tanpa-iklan" class="lp-footer-link">Komitmen Bebas Iklan</a></li>
+                    <li><a href="<?= BASE_URL ?>/privacy" class="lp-footer-link">Kebijakan Privasi</a></li>
+                    <li><a href="<?= BASE_URL ?>/privacy#keamanan" class="lp-footer-link">Standar Keamanan Data</a></li>
+                    <li><a href="<?= BASE_URL ?>/privacy#tanpa-iklan" class="lp-footer-link">Komitmen Bebas Iklan</a></li>
                 </ul>
             </div>
         </div>

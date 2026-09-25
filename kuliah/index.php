@@ -98,7 +98,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <?php foreach ($grouped[$hari] as $cIdx => $course): 
                                 $color = $palette[$cIdx % count($palette)];
                             ?>
-                                <a href="<?= BASE_URL ?>/kuliah/detail.php?id=<?= $course['id'] ?>" class="tt-course-block" style="--tt-color: <?= $color ?>;">
+                                <a href="<?= BASE_URL ?>/kuliah/detail?id=<?= $course['id'] ?>" class="tt-course-block" style="--tt-color: <?= $color ?>;">
                                     <div class="tt-course-time">
                                         <?= substr($course['jam_mulai'], 0, 5) ?> – <?= substr($course['jam_selesai'], 0, 5) ?>
                                     </div>
@@ -191,7 +191,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 </span>
                             </div>
                             <div class="data-card-actions">
-                                <a href="<?= BASE_URL ?>/kuliah/detail.php?id=<?= $course['id'] ?>" class="btn btn-secondary btn-sm" style="width: 100%;">
+                                <a href="<?= BASE_URL ?>/kuliah/detail?id=<?= $course['id'] ?>" class="btn btn-secondary btn-sm" style="width: 100%;">
                                     Kelola Tugas & Materi
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                                 </a>
@@ -211,7 +211,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Tambah Mata Kuliah</h2>
             <button class="modal-close" onclick="closeModal('addCourseModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="add_course">
                 <div class="form-group">
@@ -272,7 +272,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Edit Mata Kuliah</h2>
             <button class="modal-close" onclick="closeModal('editCourseModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="edit_course">
                 <input type="hidden" name="id" id="edit_course_id">

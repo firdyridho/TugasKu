@@ -22,7 +22,7 @@ $filePath = __DIR__ . '/uploads/' . $upload['path_file'];
 
 if (!file_exists($filePath)) {
     flash('error', 'File fisik tidak ditemukan di server.');
-    redirect('/kuliah/detail.php?id=' . $upload['course_id']);
+    redirect('/kuliah/detail?id=' . $upload['course_id']);
 }
 
 // Deliver file to browser

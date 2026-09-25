@@ -17,7 +17,7 @@ if (isset($_GET['delete_task'])) {
     $taskId = (int)$_GET['delete_task'];
     $conn->query("DELETE FROM course_tasks WHERE id = $taskId AND user_id = $userId");
     flash('success', 'Tugas kuliah berhasil dihapus.');
-    header('Location: ' . BASE_URL . '/kuliah/detail.php?id=' . $courseId . '&tab=tugas');
+    header('Location: ' . BASE_URL . '/kuliah/detail?id=' . $courseId . '&tab=tugas');
     exit;
 }
 
@@ -178,7 +178,7 @@ function fileIcon($mime) {
             elseif ($task['status'] === 'selesai') { $statusLabel = 'Selesai'; $statusClass = 'status-selesai'; $nextStatus = 'belum'; }
         ?>
             <div class="task-item">
-                <a href="<?= BASE_URL ?>/proses.php?action=update_status&type=course&id=<?= $task['id'] ?>&status=<?= $nextStatus ?>&return=<?= urlencode('/kuliah/detail.php?id=' . $courseId . '&tab=tugas') ?>"
+                <a href="<?= BASE_URL ?>/proses?action=update_status&type=course&id=<?= $task['id'] ?>&status=<?= $nextStatus ?>&return=<?= urlencode('/kuliah/detail?id=' . $courseId . '&tab=tugas') ?>"
                    class="status-pill <?= $statusClass ?>" title="Klik untuk ubah status">
                     <?php if ($task['status'] === 'selesai'): ?>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
@@ -256,11 +256,11 @@ function fileIcon($mime) {
                     </div>
                 </div>
                 <div class="upload-file-actions">
-                    <a href="<?= BASE_URL ?>/download.php?id=<?= $f['id'] ?>" class="btn btn-secondary btn-sm" title="Download">
+                    <a href="<?= BASE_URL ?>/download?id=<?= $f['id'] ?>" class="btn btn-secondary btn-sm" title="Download">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         Unduh
                     </a>
-                    <a href="<?= BASE_URL ?>/proses.php?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=materi" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus file ini?')">Hapus</a>
+                    <a href="<?= BASE_URL ?>/proses?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=materi" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus file ini?')">Hapus</a>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -295,10 +295,10 @@ function fileIcon($mime) {
                             <div class="upload-list-meta"><?= formatFileSize($f['ukuran_file']) ?> &bull; <?= date('d M Y', strtotime($f['created_at'])) ?></div>
                         </div>
                         <div style="display: flex; gap: 0.25rem; flex-shrink: 0;">
-                            <a href="<?= BASE_URL ?>/download.php?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm">
+                            <a href="<?= BASE_URL ?>/download?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             </a>
-                            <a href="<?= BASE_URL ?>/proses.php?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=files" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus?')">
+                            <a href="<?= BASE_URL ?>/proses?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=files" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus?')">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
                             </a>
                         </div>
@@ -332,10 +332,10 @@ function fileIcon($mime) {
                             <div class="upload-list-meta"><?= formatFileSize($f['ukuran_file']) ?> &bull; <?= date('d M Y H:i', strtotime($f['created_at'])) ?></div>
                         </div>
                         <div style="display: flex; gap: 0.25rem; flex-shrink: 0;">
-                            <a href="<?= BASE_URL ?>/download.php?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm">
+                            <a href="<?= BASE_URL ?>/download?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             </a>
-                            <a href="<?= BASE_URL ?>/proses.php?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=files" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus?')">
+                            <a href="<?= BASE_URL ?>/proses?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=files" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus?')">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
                             </a>
                         </div>
@@ -380,11 +380,11 @@ function fileIcon($mime) {
                     </div>
                 </div>
                 <div class="upload-history-actions">
-                    <a href="<?= BASE_URL ?>/download.php?id=<?= $f['id'] ?>" class="btn btn-secondary btn-sm">
+                    <a href="<?= BASE_URL ?>/download?id=<?= $f['id'] ?>" class="btn btn-secondary btn-sm">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         Unduh
                     </a>
-                    <a href="<?= BASE_URL ?>/proses.php?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=riwayat" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus file ini dari riwayat?')">Hapus</a>
+                    <a href="<?= BASE_URL ?>/proses?action=delete_upload&id=<?= $f['id'] ?>&course_id=<?= $courseId ?>&tab=riwayat" class="btn btn-danger-ghost btn-sm" onclick="return confirm('Hapus file ini dari riwayat?')">Hapus</a>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -401,7 +401,7 @@ function fileIcon($mime) {
             <h2>Tambah Tugas Kuliah</h2>
             <button class="modal-close" onclick="closeModal('addCourseTaskModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="add_course_task">
                 <input type="hidden" name="course_id" value="<?= $courseId ?>">
@@ -447,7 +447,7 @@ function fileIcon($mime) {
             <h2>Edit Tugas Kuliah</h2>
             <button class="modal-close" onclick="closeModal('editCourseTaskModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="edit_course_task">
                 <input type="hidden" name="id" id="edit_course_task_id">
@@ -494,7 +494,7 @@ function fileIcon($mime) {
             <h2>Upload Materi Kuliah</h2>
             <button class="modal-close" onclick="closeModal('uploadMateriModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/upload.php" enctype="multipart/form-data">
+        <form method="POST" action="<?= BASE_URL ?>/upload" enctype="multipart/form-data">
             <div class="modal-body">
                 <input type="hidden" name="course_id" value="<?= $courseId ?>">
                 <input type="hidden" name="tipe" value="materi">
@@ -530,7 +530,7 @@ function fileIcon($mime) {
             <h2 id="uploadFileModalTitle">Upload File</h2>
             <button class="modal-close" onclick="closeModal('uploadFileModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/upload.php" enctype="multipart/form-data">
+        <form method="POST" action="<?= BASE_URL ?>/upload" enctype="multipart/form-data">
             <div class="modal-body">
                 <input type="hidden" name="course_id" value="<?= $courseId ?>">
                 <input type="hidden" name="tipe" id="uploadFileTipe" value="soal">

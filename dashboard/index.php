@@ -198,7 +198,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <h4><?= htmlspecialchars($c['nama_mk']) ?></h4>
                             <p><?= htmlspecialchars($c['dosen']) ?> &bull; Ruang <?= htmlspecialchars($c['ruang'] ?: 'TBA') ?></p>
                         </div>
-                        <a href="<?= BASE_URL ?>/kuliah/detail.php?id=<?= $c['id'] ?>" class="btn btn-ghost btn-sm" title="Lihat Tugas MK">
+                        <a href="<?= BASE_URL ?>/kuliah/detail?id=<?= $c['id'] ?>" class="btn btn-ghost btn-sm" title="Lihat Tugas MK">
                             Buka
                         </a>
                     </div>
@@ -263,7 +263,7 @@ require_once __DIR__ . '/../includes/header.php';
                         $urgencyText = $diffDays . ' hari lagi';
                     }
 
-                    $detailUrl = $isOrg ? (BASE_URL . '/organisasi/detail.php?id=' . $t['parent_id']) : (BASE_URL . '/kuliah/detail.php?id=' . $t['parent_id']);
+                    $detailUrl = $isOrg ? (BASE_URL . '/organisasi/detail?id=' . $t['parent_id']) : (BASE_URL . '/kuliah/detail?id=' . $t['parent_id']);
                     ?>
                     <div class="task-item">
                         <div style="width: 4px; height: 38px; background: <?= $isOrg ? 'var(--accent)' : 'var(--info)' ?>; border-radius: 2px; flex-shrink: 0;"></div>

@@ -79,6 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk & Daftar - TugasKu</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
+
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- 1. FORM DAFTAR (SIGN UP - KIRI) -->
         <div class="auth-form-side sign-up-form-side">
-            <form method="POST" action="login.php">
+            <form method="POST" action="<?= BASE_URL ?>/auth/login">
                 <input type="hidden" name="auth_action" value="register">
 
                 <div style="margin-bottom: 1.25rem;">
@@ -177,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- 2. FORM MASUK (SIGN IN - KANAN) -->
         <div class="auth-form-side sign-in-form-side">
-            <form method="POST" action="login.php">
+            <form method="POST" action="<?= BASE_URL ?>/auth/login">
                 <input type="hidden" name="auth_action" value="login">
 
                 <div style="margin-bottom: 1.25rem;">

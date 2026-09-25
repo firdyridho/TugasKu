@@ -50,7 +50,7 @@ switch ($action) {
         } else {
             flash('error', 'Gagal menambahkan tugas.');
         }
-        redirect('/organisasi/detail.php?id=' . $orgId);
+        redirect('/organisasi/detail?id=' . $orgId);
         break;
 
     case 'edit_org_task':
@@ -69,7 +69,7 @@ switch ($action) {
         } else {
             flash('error', 'Gagal memperbarui tugas.');
         }
-        redirect('/organisasi/detail.php?id=' . $orgId);
+        redirect('/organisasi/detail?id=' . $orgId);
         break;
 
     case 'add_course':
@@ -127,7 +127,7 @@ switch ($action) {
         } else {
             flash('error', 'File tidak ditemukan atau akses ditolak.');
         }
-        redirect('/kuliah/detail.php?id=' . $courseId . '&tab=' . $tab);
+        redirect('/kuliah/detail?id=' . $courseId . '&tab=' . $tab);
         break;
 
     case 'add_course_task':
@@ -145,7 +145,7 @@ switch ($action) {
         } else {
             flash('error', 'Gagal menambahkan tugas kuliah.');
         }
-        redirect('/kuliah/detail.php?id=' . $courseId);
+        redirect('/kuliah/detail?id=' . $courseId);
         break;
 
     case 'edit_course_task':
@@ -164,7 +164,7 @@ switch ($action) {
         } else {
             flash('error', 'Gagal memperbarui tugas kuliah.');
         }
-        redirect('/kuliah/detail.php?id=' . $courseId);
+        redirect('/kuliah/detail?id=' . $courseId);
         break;
 
     case 'add_schedule':

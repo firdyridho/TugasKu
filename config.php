@@ -1,11 +1,24 @@
 <?php
 session_start();
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'tugasku_db');
-define('BASE_URL', '/TugasKu');
+// Load local/hosting configuration if present (e.g. on live web server)
+if (file_exists(__DIR__ . '/config_local.php')) {
+    require_once __DIR__ . '/config_local.php';
+}
+
+if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'root');
+if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'tugasku_db');
+
+if (!defined('BASE_URL')) {
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (strpos($uri, '/TugasKu') === 0) {
+        define('BASE_URL', '/TugasKu');
+    } else {
+        define('BASE_URL', '');
+    }
+}
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($conn->connect_error) {
@@ -27,7 +40,7 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: ' . BASE_URL . '/auth/login.php');
+        header('Location: ' . BASE_URL . '/auth/login');
         exit;
     }
 }

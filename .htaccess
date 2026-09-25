@@ -1,6 +1,25 @@
 RewriteEngine On
+RewriteBase /TugasKu/
 
+# 1. Redirect index.php to directory root
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/TugasKu/(.*?)/?index\.php [NC]
+RewriteRule ^ /TugasKu/%1 [R=301,L]
+
+# 2. Redirect any other *.php request to clean URL (only for GET/HEAD, not POST)
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/TugasKu/([^\s?]+)\.php [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# 3. If file or directory physically exists, serve it
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 4. If filename.php exists, rewrite internally
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]
+
+# 5. Fallback for non-existent files
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
 RewriteRule ^(.*)$ index.php [QSA,L]

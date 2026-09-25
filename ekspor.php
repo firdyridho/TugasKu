@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $pageTitle = "Ekspor Data";
 require_once __DIR__ . "/config.php";
 requireLogin();
@@ -71,9 +71,9 @@ $total = $countOrg + $countTugas + $countKuliah + $countMandiri;
 </div>
 <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
     <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);"><h3 style="font-size:1rem;font-weight:700;">Ringkasan Data Kamu</h3></div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);">
+    <div class="export-summary-grid">
         <?php foreach([["Tugas Organisasi",$countOrg,"var(--accent)"],["Tugas Kuliah",$countTugas,"var(--warning)"],["Jadwal Kuliah",$countKuliah,"var(--info)"],["Jadwal Mandiri",$countMandiri,"var(--success)"]] as $s): ?>
-        <div style="padding:1.25rem 1.5rem;border-right:1px solid var(--border);"><div style="font-size:1.75rem;font-weight:800;color:<?=$s[2]?>;line-height:1"><?=$s[1]?></div><div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem"><?=$s[0]?></div></div>
+        <div class="export-summary-cell"><div style="font-size:1.75rem;font-weight:800;color:<?=$s[2]?>;line-height:1"><?=$s[1]?></div><div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem"><?=$s[0]?></div></div>
         <?php endforeach; ?>
     </div>
     <div style="padding:1rem 1.5rem;background:var(--bg-primary);display:flex;align-items:center;justify-content:space-between;">

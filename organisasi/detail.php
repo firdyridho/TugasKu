@@ -17,7 +17,7 @@ if (isset($_GET['delete_task'])) {
     $taskId = (int)$_GET['delete_task'];
     $conn->query("DELETE FROM org_tasks WHERE id = $taskId AND user_id = $userId");
     flash('success', 'Tugas organisasi berhasil dihapus.');
-    header('Location: ' . BASE_URL . '/organisasi/detail.php?id=' . $orgId);
+    header('Location: ' . BASE_URL . '/organisasi/detail?id=' . $orgId);
     exit;
 }
 
@@ -162,7 +162,7 @@ require_once __DIR__ . '/../includes/header.php';
             ?>
             <div class="task-item">
                 <!-- Status Quick Cycle -->
-                <a href="<?= BASE_URL ?>/proses.php?action=update_status&type=org&id=<?= $task['id'] ?>&status=<?= $nextStatus ?>&return=<?= urlencode('/organisasi/detail.php?id=' . $orgId) ?>" 
+                <a href="<?= BASE_URL ?>/proses?action=update_status&type=org&id=<?= $task['id'] ?>&status=<?= $nextStatus ?>&return=<?= urlencode('/organisasi/detail?id=' . $orgId) ?>" 
                    class="status-pill <?= $statusClass ?>" 
                    title="Klik untuk ubah status ke: <?= ucfirst($nextStatus) ?>">
                     <?php if ($task['status'] === 'selesai'): ?>
@@ -218,7 +218,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Tambah Tugas Organisasi</h2>
             <button class="modal-close" onclick="closeModal('addTaskModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="add_org_task">
                 <input type="hidden" name="org_id" value="<?= $orgId ?>">
@@ -264,7 +264,7 @@ require_once __DIR__ . '/../includes/header.php';
             <h2>Edit Tugas Organisasi</h2>
             <button class="modal-close" onclick="closeModal('editTaskModal')">&times;</button>
         </div>
-        <form method="POST" action="<?= BASE_URL ?>/proses.php">
+        <form method="POST" action="<?= BASE_URL ?>/proses">
             <div class="modal-body">
                 <input type="hidden" name="action" value="edit_org_task">
                 <input type="hidden" name="id" id="edit_task_id">

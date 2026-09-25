@@ -8,6 +8,11 @@ $loggedIn = isLoggedIn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Terbaru & Catatan Rilis - TugasKu</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
+
     <meta name="description" content="Riwayat pembaruan fitur, peningkatan performa, dan catatan rilis versi terbaru platform TugasKu.">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -353,7 +358,7 @@ $loggedIn = isLoggedIn();
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                 </a>
             <?php else: ?>
-                <a href="<?= BASE_URL ?>/auth/login.php" class="cl-btn-primary">
+                <a href="<?= BASE_URL ?>/auth/login" class="cl-btn-primary">
                     Masuk Akun
                 </a>
             <?php endif; ?>
@@ -391,7 +396,7 @@ $loggedIn = isLoggedIn();
                         Pembaruan besar yang menghadirkan fitur ekspor spreadsheet terstruktur, peningkatan keamanan akun dengan meteran kekuatan kata sandi, indikator uptime sistem live, panduan onboarding interaktif, serta perombakan timetable jadwal kuliah yang semakin rapi.
                     </p>
 
-                    <div class="cl-section-title">✨ Fitur Baru & Peningkatan</div>
+                    <div class="cl-section-title">Fitur Baru &amp; Peningkatan</div>
                     <ul class="cl-feature-list">
                         <li class="cl-feature-item">
                             <span class="cl-tag new">FITUR BARU</span>
@@ -414,7 +419,7 @@ $loggedIn = isLoggedIn();
                         <li class="cl-feature-item">
                             <span class="cl-tag new">FITUR BARU</span>
                             <div class="cl-feature-desc">
-                                <strong>Panduan Interaktif Mahasiswa Baru (Onboarding Tour):</strong> Walkthrough 5-langkah otomatis yang menyambut mahasiswa baru saat pertama kali membuka dashboard, lengkap dengan ilustrasi dan tips penggunaan.
+                                <strong>Panduan Interaktif Mahasiswa Baru (Onboarding Tour):</strong> Walkthrough 6-langkah otomatis yang menyambut mahasiswa baru saat pertama kali membuka dashboard, lengkap dengan ilustrasi dan tips penggunaan.
                             </div>
                         </li>
                         <li class="cl-feature-item">
@@ -447,7 +452,7 @@ $loggedIn = isLoggedIn();
                         Peningkatan navigasi kalender akademik, penyaringan kategori tugas, serta optimasi antarmuka peramban seluler (mobile devices).
                     </p>
 
-                    <div class="cl-section-title">⚡ Sorotan Pembaruan</div>
+                    <div class="cl-section-title">Sorotan Pembaruan</div>
                     <ul class="cl-feature-list">
                         <li class="cl-feature-item">
                             <span class="cl-tag new">FITUR BARU</span>
@@ -485,7 +490,7 @@ $loggedIn = isLoggedIn();
                         Peluncuran sistem pintar pelacak tenggat waktu (deadline reminder) dan dashboard ringkasan statistik kegiatan mahasiswa.
                     </p>
 
-                    <div class="cl-section-title">⚡ Sorotan Pembaruan</div>
+                    <div class="cl-section-title">Sorotan Pembaruan</div>
                     <ul class="cl-feature-list">
                         <li class="cl-feature-item">
                             <span class="cl-tag new">FITUR BARU</span>

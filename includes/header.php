@@ -8,6 +8,11 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pageTitle ?? 'TugasKu' ?> - TugasKu</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>/assets/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>/assets/img/favicon.png">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>/favicon.ico">
+
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +49,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
                 <span>Kalender</span>
             </a>
             <div class="nav-divider"></div>
-            <a href="<?= BASE_URL ?>/ekspor.php" class="nav-item <?= strpos($currentScript, 'ekspor') !== false ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/ekspor" class="nav-item <?= strpos($currentScript, 'ekspor') !== false ? 'active' : '' ?>">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 <span>Ekspor Data</span>
             </a>
@@ -61,7 +66,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'];
                     <span class="user-nim"><?= htmlspecialchars($user['nim'] ?? ($user['jurusan'] ?? 'Akun Mahasiswa')) ?></span>
                 </div>
             </a>
-            <a href="<?= BASE_URL ?>/auth/logout.php" class="btn-logout" title="Keluar dari Akun">
+            <a href="<?= BASE_URL ?>/auth/logout" class="btn-logout" title="Keluar dari Akun">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             </a>
         </div>
